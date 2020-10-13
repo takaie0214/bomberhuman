@@ -1,8 +1,8 @@
 /// Active actions (toggled by user input)
 #[derive(Default)]
 pub struct Actions {
-    pub move_up: bool,
-    pub move_down: bool,
-    pub move_left: bool,
-    pub move_right: bool
+    pub ArrowUp: bool,
+    pub ArrowDown: bool,
+    pub ArrowRight: bool,
+    pub ArrowLeft: bool
 }

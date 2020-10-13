@@ -11,12 +11,10 @@ pub struct World {
 impl World {
     /// Returns a new world of the given size
     pub fn new(size: Size) -> World {
-        let radius: i32 = 3;
-        let a: f64 = 50.0;
-        let b: f64 = 20.0;
-        let mut point = Point::new(a, b);
+        let speed: f64 = 20.0;
+        let mut point = Point::new(20.0, 50.0);
         World {
-            player: Player::new(point),
+            player: Player::new(point, speed),
             size: size
         }
     }

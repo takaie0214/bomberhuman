@@ -10,41 +10,38 @@ pub struct Player {
 
 impl Player {
     /// Create a new `Player` with a random position and direction
-    pub fn new(point: Point) -> Self {
-        let speed: f64 = 20.0;
+    pub fn new(point: Point, speed: f64) -> Self {
         Player {point: point, speed: speed}
     }
     pub fn update(&mut self, dt: f64, actions: &Actions){
-        let a: Point = Point::new(2.0, 2.0);
-        self.point.translate(&a);
 
-
-        if actions.move_up {
-            *self.y_mut() -= dt * self.speed;
+        if actions.ArrowUp {
+           // *self.y_mut() -= dt * self.speed;
+            *self.y_mut() -= dt * self.speed;;
         }
 
-        if actions.move_down {
+        if actions.ArrowDown{
             *self.y_mut() += dt * self.speed;
         }
 
-        if actions.move_right {
+        if actions.ArrowRight {
             *self.x_mut() += dt * self.speed;
         }
 
-        if actions.move_left {
+        if actions.ArrowLeft {
             *self.x_mut() -= dt * self.speed;
         }
     }
-    pub fn x(&self) -> f64{
+    pub fn x(&self) -> f64 {
         self.point.x
     }
-    pub fn y(&self) -> f64{
+    pub fn y(&self) -> f64 {
         self.point.y
     }
-    pub fn x_mut(&mut self) -> &mut f64{
+    pub fn x_mut(&mut self) -> &mut f64 {
         &mut self.point.x
     }
-    pub fn y_mut(&mut self) -> &mut f64{
+    pub fn y_mut(&mut self) -> &mut f64 {
         &mut self.point.y
     }
 }
