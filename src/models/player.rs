@@ -1,34 +1,46 @@
 use crate::geometry::{Point, Size};
-use crate::controller::Actions;
+use crate::controller::{Actions, Controller};
+use std::collections::HashMap;
+//use crate::controller::Actions;
 
 /// The `Player` is the rocket controlled by the user
-#[derive(Default)]
+//#[derive(Default)]
 pub struct Player {
+    id: i32,
+    alive: bool,
     point: Point,
-    speed: f64
+    speed: f64,
+    controller: Controller,
+
 }
 
 impl Player {
     /// Create a new `Player` with a random position and direction
-    pub fn new(point: Point, speed: f64) -> Self {
-        Player {point: point, speed: speed}
+    pub fn new(id: i32, point: Point, controller: Controller) -> Self {
+        let speed: f64 = 20.0;
+        Player {
+            id: id,
+            alive: true,
+            point: point,
+            speed: speed,
+            controller: controller,
+        }
     }
-    pub fn update(&mut self, dt: f64, actions: &Actions){
+    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>){
 
-        if actions.ArrowUp {
-           // *self.y_mut() -= dt * self.speed;
-            *self.y_mut() -= dt * self.speed;;
+        if actions.get(&self.controller.Up) == Some(&true) {
+            *self.y_mut() -= dt * self.speed;
         }
 
-        if actions.ArrowDown{
+        if actions.get(&self.controller.Down) == Some(&true) {
             *self.y_mut() += dt * self.speed;
         }
 
-        if actions.ArrowRight {
+        if actions.get(&self.controller.Right) == Some(&true) {
             *self.x_mut() += dt * self.speed;
         }
 
-        if actions.ArrowLeft {
+        if actions.get(&self.controller.Left) == Some(&true) {
             *self.x_mut() -= dt * self.speed;
         }
     }
@@ -44,5 +56,6 @@ impl Player {
     pub fn y_mut(&mut self) -> &mut f64 {
         &mut self.point.y
     }
+
 }
 
