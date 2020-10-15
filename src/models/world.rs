@@ -13,12 +13,18 @@ impl World {
     /// Returns a new world of the given size
     pub fn new(size: Size) -> World {
 
-        let mut point = Point::new(20.0, 50.0);
-        let id = 1;
-        let controller = Controller::new("ArrowUp","ArrowDown","ArrowLeft","ArrowRight");
         let mut players = Vec::new();
 
-        players.push(Player::new(id, point, controller));
+        let id1 = 1;
+        let mut point1 = Point::new(20.0, 50.0);
+        let controller1 = Controller::new("ArrowUp","ArrowDown","ArrowRight","ArrowLeft");
+        players.push(Player::new(id1, point1, controller1));
+
+        let id2 = 2;
+        let mut point2 = Point::new(150.0, 150.0);
+        let controller2 = Controller::new("w","s","d","a");
+        players.push(Player::new(id2, point2, controller2));
+
         World {
             players: players,
             size: size

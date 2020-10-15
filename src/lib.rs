@@ -56,11 +56,11 @@ impl GameState {
    // }
 
     pub fn get_objx(&self) -> f64 {
-        self.world.players[0].x()
+        self.world.players[1].x()
     }
 
     pub fn get_objy(&self) -> f64 {
-        self.world.players[0].y()
+        self.world.players[1].y()
     }
     pub fn processKey(&mut self, key: &str, b: c_int) {
         match key {
@@ -68,10 +68,10 @@ impl GameState {
             "ArrowDown"  => self.actions.insert(String::from("ArrowDown"), int_to_bool(b)),
             "ArrowRight" => self.actions.insert(String::from("ArrowRight"), int_to_bool(b)),
             "ArrowLeft"  => self.actions.insert(String::from("ArrowLeft"), int_to_bool(b)),
-            "W"          => self.actions.insert(String::from("W"), int_to_bool(b)),
-            "S"          => self.actions.insert(String::from("S"), int_to_bool(b)),
-            "A"          => self.actions.insert(String::from("A"), int_to_bool(b)),
-            "D"          => self.actions.insert(String::from("D"), int_to_bool(b)),
+            "w"          => self.actions.insert(String::from("w"), int_to_bool(b)),
+            "s"          => self.actions.insert(String::from("s"), int_to_bool(b)),
+            "a"          => self.actions.insert(String::from("a"), int_to_bool(b)),
+            "d"          => self.actions.insert(String::from("d"), int_to_bool(b)),
                        _ => None,
         };
     }
@@ -86,51 +86,4 @@ fn int_to_bool(i: c_int) -> bool {
 extern {
     pub fn alert(s: &str);
 }
-//#[wasm_bindgen(module = "/mylib/foo.js")]
-//#[wasm_bindgen(module = "/www/index.js")]
-//#[wasm_bindgen]
-//extern "C" {
-//    fn name() -> String;
-//    fn clear_screen();
-//}
-
-//pub extern "C" fn update(time: c_double) {
-//    let data: &mut GameData = &mut DATA.lock().unwrap();
-//    data.time_controller.update_seconds(time, &data.actions, &mut data.state);
-//    CollisionsController::handle_collisions(&mut data.state);
-//}
-//
-//fn int_to_bool(i: c_int) -> bool {
-//    i != 0
-
-//}
-
-//#[wasm_bindgen(module = "/mylib/foo.js")]
-//#[wasm_bindgen(module = "/www/index.js")]
-//#[wasm_bindgen]
-//extern "C" {
-//    fn name() -> String;
-//    fn clear_screen();
-//}
-
-//pub extern "C" fn update(time: c_double) {
-//    let data: &mut GameData = &mut DATA.lock().unwrap();
-//    data.time_controller.update_seconds(time, &data.actions, &mut data.state);
-//    CollisionsController::handle_collisions(&mut data.state);
-//}
-//
-//fn int_to_bool(i: c_int) -> bool {
-//    i != 0
-//}
-//
-//
-//#[no_mangle]
-//pub unsafe extern "C" fn draw() {
-//    use geometry::{Advance, Position};
-//    let data = &mut DATA.lock().unwrap();
-//    let world = &data.state.world;
-//
-//    clear_screen();
-//    draw_player(world.player.x(), world.player.y(), world.player.direction());
-//}
 
