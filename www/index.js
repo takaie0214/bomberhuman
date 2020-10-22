@@ -42,9 +42,9 @@ function resize() {
   canvas.width = window.innerWidth * 0.8;
   canvas.height = window.innerHeight * 0.8;
 }
-window.addEventListener('resize', () => {
-  resize();
-});
+//window.addEventListener('resize', () => {
+//  resize();
+//});
 
 const draw = () => {
     clear_screen();
@@ -77,6 +77,6 @@ const renderLoop = (timestamp) => {
 };
 
 const res = resources();
-resize(); 
+//resize(); 
 renderLoop();
 

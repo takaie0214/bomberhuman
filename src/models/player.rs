@@ -17,7 +17,7 @@ pub struct Player {
 impl Player {
     /// Create a new `Player` with a random position and direction
     pub fn new(id: i32, point: Point, controller: Controller) -> Self {
-        let speed: f64 = 20.0;
+        let speed: f64 = 80.0;
         Player {
             id: id,
             alive: true,
