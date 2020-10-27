@@ -1,5 +1,6 @@
 use crate::geometry::{Point, Size};
-use crate::controller::{Actions, Controller};
+use crate::controller::{Actions, Controller, Event, EventType};
+use crate::models::Bomb;
 use std::collections::HashMap;
 //use crate::controller::Actions;
 
@@ -26,36 +27,37 @@ impl Player {
             controller: controller,
         }
     }
-    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>){
+    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<EventType>){
 
         if actions.get(&self.controller.Up) == Some(&true) {
-            *self.y_mut() -= dt * self.speed;
+            self.point.y -= dt * self.speed;
         }
 
         if actions.get(&self.controller.Down) == Some(&true) {
-            *self.y_mut() += dt * self.speed;
+            self.point.y += dt * self.speed;
         }
 
         if actions.get(&self.controller.Right) == Some(&true) {
-            *self.x_mut() += dt * self.speed;
+            self.point.x += dt * self.speed;
         }
 
         if actions.get(&self.controller.Left) == Some(&true) {
-            *self.x_mut() -= dt * self.speed;
+            self.point.x -= dt * self.speed;
         }
-    }
-    pub fn x(&self) -> f64 {
-        self.point.x
-    }
-    pub fn y(&self) -> f64 {
-        self.point.y
-    }
-    pub fn x_mut(&mut self) -> &mut f64 {
-        &mut self.point.x
-    }
-    pub fn y_mut(&mut self) -> &mut f64 {
-        &mut self.point.y
-    }
+        if actions.get(&self.controller.A) == Some(&true) {
+            let new_bomb = Bomb::new(self.point);
+            event.push(EventType::SetBomb(Bomb::new(self.point)));
+        }
 
+    }
+    pub fn draw(&self){
+        draw_player(self.point.x, self.point.y);
+    }
 }
 
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/src/javascript/canvas.js")]
+extern "C" {
+    pub fn draw_player(x: f64, y: f64);
+}

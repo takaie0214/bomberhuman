@@ -38,40 +38,23 @@ impl GameState {
     pub fn update(&mut self, dt: f64){
         self.world.update(dt, &self.actions);
     }
-
-   // pub fn toggle_turn_up(&mut self, b: c_int) {
-   //     self.actions.ArrowUp = int_to_bool(b)
-   // }
-
-   // pub fn toggle_turn_down(&mut self, b: c_int) {
-   //     self.actions.ArrowDown = int_to_bool(b)
-   // }
-
-   // pub fn toggle_turn_right(&mut self, b: c_int) {
-   //     self.actions.ArrowRight = int_to_bool(b)
-   // }
-
-   // pub fn toggle_turn_left(&mut self, b: c_int) {
-   //     self.actions.ArrowLeft = int_to_bool(b)
-   // }
-
-    pub fn get_objx(&self) -> f64 {
-        self.world.players[1].x()
+    pub fn draw(&self){
+        clear_screen();
+        self.world.draw();
     }
 
-    pub fn get_objy(&self) -> f64 {
-        self.world.players[1].y()
-    }
     pub fn processKey(&mut self, key: &str, b: c_int) {
         match key {
             "ArrowUp"    => self.actions.insert(String::from("ArrowUp"), int_to_bool(b)),
             "ArrowDown"  => self.actions.insert(String::from("ArrowDown"), int_to_bool(b)),
             "ArrowRight" => self.actions.insert(String::from("ArrowRight"), int_to_bool(b)),
             "ArrowLeft"  => self.actions.insert(String::from("ArrowLeft"), int_to_bool(b)),
+            " "          => self.actions.insert(String::from("Space"), int_to_bool(b)),
             "w"          => self.actions.insert(String::from("w"), int_to_bool(b)),
             "s"          => self.actions.insert(String::from("s"), int_to_bool(b)),
             "a"          => self.actions.insert(String::from("a"), int_to_bool(b)),
             "d"          => self.actions.insert(String::from("d"), int_to_bool(b)),
+            "m"          => self.actions.insert(String::from("m"), int_to_bool(b)),
                        _ => None,
         };
     }
@@ -85,5 +68,10 @@ fn int_to_bool(i: c_int) -> bool {
 #[wasm_bindgen]
 extern {
     pub fn alert(s: &str);
+}
+
+#[wasm_bindgen(module = "/src/javascript/canvas.js")]
+extern "C" {
+    pub fn clear_screen();
 }
 
