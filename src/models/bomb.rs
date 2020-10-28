@@ -11,7 +11,7 @@ impl Bomb {
     pub fn new(point: Point) -> Self {
         Bomb{
             point: point,
-            ttl: 100.0,
+            ttl: 5.0,
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  Vec<EventType>) {
@@ -21,14 +21,23 @@ impl Bomb {
 //        }
     }
     pub fn draw(&self){
-        draw_bomb(self.point.x, self.point.y);
+        let mut x = 0;
+        let mut y = 0;
+
+        if (self.ttl < 1.0){
+            x = 2;
+        }else if (self.ttl < 3.0) {
+            x = 1;
+        }
+
+        draw_bomb(x, y,self.point.x, self.point.y);
     }
 }
 
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_bomb(x: f64, y: f64);
+    pub fn draw_bomb(recX:i32, recY:i32,x: f64, y: f64);
 }
 
 #[wasm_bindgen]

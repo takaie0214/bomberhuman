@@ -45,7 +45,7 @@ impl World {
         for (index1, val1) in wall_bmp.iter().enumerate() {
             for (index2, val2)in val1.iter().enumerate() {
                 if (*val2 == 1) {
-                    walls.push(Wall::new(Point::new(50.0 * index2 as f64, 50.0 * index1 as f64)));
+                    walls.push(Wall::new(Point::new(50.0 * index2 as f64 + 25.0, 50.0 * index1 as f64 + 25.0)));
                 }
             }
         }
@@ -76,8 +76,8 @@ impl World {
                 }
         }
     }
-    pub fn draw(&self){
-        for p in &self.players {
+    pub fn draw(&mut self){
+        for p in &mut self.players {
             p.draw();
         }
         for w in &self.walls {

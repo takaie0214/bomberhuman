@@ -19,8 +19,7 @@ use std::collections::HashMap;
 
 use std::os::raw::{c_double, c_int};
 
-#[wasm_bindgen]
-struct GameState {
+#[wasm_bindgen] struct GameState {
     // The world contains everything that needs to be drawn
     world: World,
     actions: HashMap<String, bool>,
@@ -38,7 +37,7 @@ impl GameState {
     pub fn update(&mut self, dt: f64){
         self.world.update(dt, &self.actions);
     }
-    pub fn draw(&self){
+    pub fn draw(&mut self){
         clear_screen();
         self.world.draw();
     }
