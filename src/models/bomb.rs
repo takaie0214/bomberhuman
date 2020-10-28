@@ -3,13 +3,17 @@ use crate::geometry::Point;
 use crate::controller::{Actions, Controller, Event, EventType};
 
 pub struct Bomb {
-    ttl: f64,
-    point: Point,
+    pub id: i32,
+    pub radius: f64,
+    pub ttl: f64,
+    pub point: Point,
 }
 
 impl Bomb {
     pub fn new(point: Point) -> Self {
         Bomb{
+            id: 200,
+            radius: 20.0,
             point: point,
             ttl: 100.0,
         }

@@ -1,13 +1,17 @@
 use crate::geometry::{Point, Size};
 
 pub struct Wall {
-    point: Point,
+    pub point: Point,
+    pub id: i32,
+    pub radius: f64,
 }
 
 impl Wall {
     pub fn new(point: Point) -> Self {
         Wall {
             point: point,
+            id: 300,
+            radius: 20.0,
         }
     }
     pub fn draw(&self){

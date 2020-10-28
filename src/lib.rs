@@ -15,6 +15,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 use self::geometry::Size;
 use self::controller::Actions;
 use self::models::World;
+use self::controller::Collision;
 use std::collections::HashMap;
 
 use std::os::raw::{c_double, c_int};
@@ -24,6 +25,7 @@ struct GameState {
     // The world contains everything that needs to be drawn
     world: World,
     actions: HashMap<String, bool>,
+    // collision: Collision
 }
 
 #[wasm_bindgen]
@@ -33,10 +35,12 @@ impl GameState {
         GameState {
             world: World::new(Size::new(width, height)),
             actions: HashMap::new(),
+            // collision: Collision::new()
         }
     }
     pub fn update(&mut self, dt: f64){
         self.world.update(dt, &self.actions);
+        Collision::collision_with(dt,&self.actions,&mut self.world);
     }
     pub fn draw(&self){
         clear_screen();

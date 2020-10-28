@@ -18,7 +18,7 @@ impl World {
         let mut players = Vec::new();
 
         let id1 = 1;
-        let mut point1 = Point::new(20.0, 50.0);
+        let mut point1 = Point::new(75.0, 75.0);
         let controller1 = Controller::new("ArrowUp","ArrowDown","ArrowRight","ArrowLeft", "Space");
         players.push(Player::new(id1, point1, controller1));
 
@@ -45,7 +45,7 @@ impl World {
         for (index1, val1) in wall_bmp.iter().enumerate() {
             for (index2, val2)in val1.iter().enumerate() {
                 if (*val2 == 1) {
-                    walls.push(Wall::new(Point::new(50.0 * index2 as f64, 50.0 * index1 as f64)));
+                    walls.push(Wall::new(Point::new(50.0 * index2 as f64+25.0, 50.0 * index1 as f64+25.0)));
                 }
             }
         }

@@ -41,7 +41,7 @@ const resources = () => {
 const res = resources();
 
 export function draw_player(x, y) {
-    ctx.drawImage(res.player, x - 10, y - 10);
+    ctx.drawImage(res.player, x-25, y-25);
     ctx.fillStyle = "black";
 }
 
@@ -51,7 +51,7 @@ export function draw_bomb(x, y) {
 }
 
 export function draw_wall(x, y) {
-    ctx.drawImage(res.wall, x , y);
+    ctx.drawImage(res.wall, x-25 , y-25);
     ctx.fillStyle = "black";
 }
 
