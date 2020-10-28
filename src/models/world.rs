@@ -18,12 +18,12 @@ impl World {
         let mut players = Vec::new();
 
         let id1 = 1;
-        let mut point1 = Point::new(20.0, 50.0);
+        let mut point1 = Point::new(75.0, 75.0);
         let controller1 = Controller::new("ArrowUp","ArrowDown","ArrowRight","ArrowLeft", "Space");
         players.push(Player::new(id1, point1, controller1));
 
         let id2 = 2;
-        let mut point2 = Point::new(150.0, 150.0);
+        let mut point2 = Point::new(675.0, 575.0);
         let controller2 = Controller::new("w","s","d","a", "m");
         players.push(Player::new(id2, point2, controller2));
 

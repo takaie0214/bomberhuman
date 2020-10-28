@@ -24,11 +24,6 @@ impl Player {
     pub fn new(id: i32, point: Point, controller: Controller) -> Self {
         let speed: f64 = 80.0;
         let img: &str;
-        if (id ==1) {
-            img = "image/akane.png";
-        } else {
-            img = "image/aoi.png";
-        }
         Player {
             id: id,
             alive: true,
