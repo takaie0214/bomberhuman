@@ -1,4 +1,4 @@
-use crate::geometry::Point;
+use crate::geometry::{Point, Size, Position};
 
 use crate::controller::{Actions, Controller, Event, EventType};
 
@@ -33,6 +33,16 @@ impl Bomb {
         draw_bomb(x, y,self.point.x, self.point.y);
     }
 }
+impl Position for Bomb{
+    fn x(&self) -> i32{
+        self.point.x
+
+    }
+    fn y(&self) -> i32{
+        self.point.y
+
+    }
+}
 
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
@@ -44,3 +54,4 @@ extern "C" {
 extern {
     pub fn alert(s: &str);
 }
+

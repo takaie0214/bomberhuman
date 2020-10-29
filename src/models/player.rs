@@ -1,4 +1,4 @@
-use crate::geometry::{Point, Size};
+use crate::geometry::{Point, Size, Position};
 use crate::controller::{Actions, Controller, Event, EventType};
 use crate::models::Bomb;
 use std::collections::HashMap;
@@ -22,8 +22,11 @@ pub struct Player {
 impl Player {
     /// Create a new `Player` with a random position and direction
     pub fn new(id: i32, point: Point, controller: Controller) -> Self {
-        let speed: f64= 80.0;
+        let mut speed: f64= 200.0;
         let img: &str;
+        if (id == 2) {
+            speed= 80.0;
+        }
         Player {
             id: id,
             alive: true,
@@ -112,6 +115,18 @@ impl Player {
         let id = "player".to_string() + &self.id.to_string();
         draw_player_animation(&id, x, y, self.point.x, self.point.y); 
 //        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking); 
+    }
+}
+
+
+impl Position for Player{
+    fn x(&self) -> i32{
+        self.point.x
+
+    }
+    fn y(&self) -> i32{
+        self.point.y
+
     }
 }
 
