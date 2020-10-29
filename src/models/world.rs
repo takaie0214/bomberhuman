@@ -17,29 +17,29 @@ impl World {
 
         let mut players = Vec::new();
 
-        let id1 = 1;
+        let id1 = 101;
         let mut point1 = Point::new(75.0, 75.0);
         let controller1 = Controller::new("ArrowUp","ArrowDown","ArrowRight","ArrowLeft", "Space");
         players.push(Player::new(id1, point1, controller1));
 
-        let id2 = 2;
+        let id2 = 102;
         let mut point2 = Point::new(150.0, 150.0);
         let controller2 = Controller::new("w","s","d","a", "m");
         players.push(Player::new(id2, point2, controller2));
 
         let wall_bmp = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-                       [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-                       [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 
         let mut walls = Vec::new();
         for (index1, val1) in wall_bmp.iter().enumerate() {
@@ -71,7 +71,14 @@ impl World {
             None => (),
             Some(T) =>
                 match T {
-                    EventType::SetBomb(bomb) => self.bomb.push(bomb),
+                    EventType::SetBomb{id,x,y} => {
+                        for b in &self.bomb{
+                            if (b.point.x == x && b.point.y == y){
+                                return ();
+                            }
+                        }
+                        self.bomb.push(Bomb::new(id,x,y));
+                    },
                     EventType::Explosion => (),
                 }
         }

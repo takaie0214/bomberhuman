@@ -4,6 +4,7 @@ use crate::models::Bomb;
 use crate::models::Wall;
 use crate::controller::Actions;
 use std::collections::HashMap;
+use crate::geometry::Point;
 
 use wasm_bindgen::prelude::*;
 
@@ -50,10 +51,10 @@ impl Collision {
     // }
 }
 pub fn player_to_bomb(player: &mut Player, bomb: &Bomb, dt: f64, actions: &HashMap<String, bool>){
-    player.relocate(dt,actions);
+    player.relocate(dt,actions,&bomb.point);
 }
 pub fn player_to_wall(player: &mut Player, wall: &Wall, dt: f64, actions: &HashMap<String, bool>){
-    player.relocate(dt,actions);
+    player.relocate(dt,actions,&wall.point);
 }
 #[wasm_bindgen]
 extern {

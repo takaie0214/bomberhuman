@@ -10,11 +10,11 @@ pub struct Bomb {
 }
 
 impl Bomb {
-    pub fn new(point: Point) -> Self {
+    pub fn new(id: i32, x: f64, y: f64) -> Self {
         Bomb{
-            id: 200,
-            radius: 20.0,
-            point: point,
+            id: id,
+            radius: 24.0,
+            point: Point::new(x,y),
             ttl: 100.0,
         }
     }

@@ -11,7 +11,7 @@ impl Wall {
         Wall {
             point: point,
             id: 300,
-            radius: 20.0,
+            radius: 24.0,
         }
     }
     pub fn draw(&self){

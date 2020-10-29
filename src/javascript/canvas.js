@@ -46,7 +46,7 @@ export function draw_player(x, y) {
 }
 
 export function draw_bomb(x, y) {
-    ctx.drawImage(res.bomb, x - 10, y - 10);
+    ctx.drawImage(res.bomb, x - 25, y - 25);
     ctx.fillStyle = "black";
 }
 
