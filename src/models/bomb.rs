@@ -16,7 +16,7 @@ impl Bomb {
     }
     pub fn update(&mut self, dt: f64, event: &mut  Vec<EventType>) {
         self.ttl -= dt;
-//        if (self.ttl < 0.0) {
+//        if (self.ttl < 0) {
 //            event.push(EventType::Explosion);
 //        }
     }
@@ -37,7 +37,7 @@ impl Bomb {
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_bomb(recX:i32, recY:i32,x: f64, y: f64);
+    pub fn draw_bomb(recX:i32, recY:i32,x: i32, y: i32);
 }
 
 #[wasm_bindgen]

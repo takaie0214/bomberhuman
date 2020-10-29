@@ -12,7 +12,7 @@ pub struct Player {
     point: Point,
     dir : String,
     idle: bool,
-    walk_count: f64,
+    walk_count: i32,
     prev_dir: String,
     speed: f64,
     controller: Controller,
@@ -22,7 +22,7 @@ pub struct Player {
 impl Player {
     /// Create a new `Player` with a random position and direction
     pub fn new(id: i32, point: Point, controller: Controller) -> Self {
-        let speed: f64 = 80.0;
+        let speed: f64= 80.0;
         let img: &str;
         Player {
             id: id,
@@ -31,44 +31,44 @@ impl Player {
             dir : String::from("down"),
             prev_dir: String::from("down"),
             idle: true,
-            walk_count: 0.0,
+            walk_count: 0,
             speed: speed,
             controller: controller,
 
         }
     }
     pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<EventType>){
-        let mut x = 0.0;
-        let mut y = 0.0;
+        let mut x = 0;
+        let mut y = 0;
 
 
         if actions.get(&self.controller.Up) == Some(&true) {
-            y -= dt * self.speed;
+            y -= (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Down) == Some(&true) {
-            y += dt * self.speed;
+            y += (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Right) == Some(&true) {
-            x += dt * self.speed;
+            x += (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Left) == Some(&true) {
-            x -= dt * self.speed;
+            x -= (dt * self.speed) as i32;
         }
         self.point.y += y;
         self.point.x += x;
-        if (y < 0.0){
+        if (y < 0){
             self.idle=false;
             self.dir = "up".to_string();
-        }else if (y > 0.0){
+        }else if (y > 0){
             self.idle=false;
             self.dir = "down".to_string();
-        }else if (x > 0.0){
+        }else if (x > 0){
             self.idle=false;
             self.dir = "right".to_string();
-        }else if (x < 0.0){
+        }else if (x < 0){
             self.idle=false;
             self.dir = "left".to_string();
         }else{
@@ -94,8 +94,8 @@ impl Player {
         let mut y = 0;
         let mut x = 0;
 
-        if (self.idle == true) {self.walk_count = 0.0;}
-        else {self.walk_count += self.speed;}
+        if (self.idle == true) {self.walk_count = 0;}
+        else {self.walk_count += self.speed as i32;}
         //log(&self.walk_count.to_string());
 
         // draw_player(self.point.x, self.point.y);
@@ -104,10 +104,10 @@ impl Player {
         if (self.dir == "left"){y=1}
         if (self.dir == "right"){y=3}
 
-        if (self.walk_count > 0.0) {x=2}
-        if (self.walk_count > 800.0) {x=1}
-        if (self.walk_count > 1600.0) {x=0}
-        if (self.walk_count > 2400.0) {x=1; self.walk_count=-9.0;}
+        if (self.walk_count > 0) {x=2}
+        if (self.walk_count > 800) {x=1}
+        if (self.walk_count > 1600) {x=0}
+        if (self.walk_count > 2400) {x=1; self.walk_count=-9;}
 
         let id = "player".to_string() + &self.id.to_string();
         draw_player_animation(&id, x, y, self.point.x, self.point.y); 
@@ -119,8 +119,8 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_player(x: f64, y: f64);
-    pub fn draw_player_animation(id: &str,recX:i32, recY:i32, x: f64, y: f64);
+    pub fn draw_player(x: i32, y: i32);
+    pub fn draw_player_animation(id: &str,recX:i32, recY:i32, x: i32, y: i32);
 }
 
 #[wasm_bindgen]

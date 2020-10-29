@@ -28,7 +28,7 @@ use std::os::raw::{c_double, c_int};
 #[wasm_bindgen]
 impl GameState {
     /// Returns a new `GameState` containing a `World` of the given `Size`
-    pub fn new(width: f64, height: f64) -> GameState {
+    pub fn new(width: i32, height: i32) -> GameState {
         GameState {
             world: World::new(Size::new(width, height)),
             actions: HashMap::new(),

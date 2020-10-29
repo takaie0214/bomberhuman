@@ -18,6 +18,6 @@ impl Wall {
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_wall(x: f64, y: f64);
+    pub fn draw_wall(x: i32, y: i32);
 }
 
