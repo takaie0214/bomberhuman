@@ -3,7 +3,7 @@ use crate::geometry::{Point, Size};
 pub struct Wall {
     pub point: Point,
     pub id: i32,
-    pub radius: f64,
+    pub radius: i32,
 }
 
 impl Wall {
@@ -11,7 +11,7 @@ impl Wall {
         Wall {
             point: point,
             id: 300,
-            radius: 24.0,
+            radius: 24,
         }
     }
     pub fn draw(&self){
@@ -22,6 +22,6 @@ impl Wall {
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_wall(x: f64, y: f64);
+    pub fn draw_wall(x: i32, y: i32);
 }
 

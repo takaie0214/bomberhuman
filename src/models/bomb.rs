@@ -1,41 +1,61 @@
-use crate::geometry::Point;
+use crate::geometry::{Point, Size, Position};
 
 use crate::controller::{Actions, Controller, Event, EventType};
 
 pub struct Bomb {
     pub id: i32,
-    pub radius: f64,
+    pub radius: i32,
     pub ttl: f64,
     pub point: Point,
 }
 
 impl Bomb {
-    pub fn new(id: i32, x: f64, y: f64) -> Self {
+    pub fn new(id: i32, x: i32, y: i32) -> Self {
         Bomb{
             id: id,
-            radius: 24.0,
+            radius: 24,
             point: Point::new(x,y),
             ttl: 100.0,
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  Vec<EventType>) {
         self.ttl -= dt;
-//        if (self.ttl < 0.0) {
+//        if (self.ttl < 0) {
 //            event.push(EventType::Explosion);
 //        }
     }
     pub fn draw(&self){
-        draw_bomb(self.point.x, self.point.y);
+        let mut x = 0;
+        let mut y = 0;
+
+        if (self.ttl < 1.0){
+            x = 2;
+        }else if (self.ttl < 3.0) {
+            x = 1;
+        }
+
+        draw_bomb(x, y,self.point.x, self.point.y);
+    }
+}
+impl Position for Bomb{
+    fn x(&self) -> i32{
+        self.point.x
+
+    }
+    fn y(&self) -> i32{
+        self.point.y
+
     }
 }
 
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_bomb(x: f64, y: f64);
+    pub fn draw_bomb(recX:i32, recY:i32,x: i32, y: i32);
 }
 
 #[wasm_bindgen]
 extern {
     pub fn alert(s: &str);
 }
+

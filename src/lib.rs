@@ -20,8 +20,7 @@ use std::collections::HashMap;
 
 use std::os::raw::{c_double, c_int};
 
-#[wasm_bindgen]
-struct GameState {
+#[wasm_bindgen] struct GameState {
     // The world contains everything that needs to be drawn
     world: World,
     actions: HashMap<String, bool>,
@@ -31,7 +30,7 @@ struct GameState {
 #[wasm_bindgen]
 impl GameState {
     /// Returns a new `GameState` containing a `World` of the given `Size`
-    pub fn new(width: f64, height: f64) -> GameState {
+    pub fn new(width: i32, height: i32) -> GameState {
         GameState {
             world: World::new(Size::new(width, height)),
             actions: HashMap::new(),
@@ -42,23 +41,33 @@ impl GameState {
         self.world.update(dt, &self.actions);
         Collision::collision_with(dt,&self.actions,&mut self.world);
     }
-    pub fn draw(&self){
+    pub fn draw(&mut self){
         clear_screen();
         self.world.draw();
     }
 
     pub fn processKey(&mut self, key: &str, b: c_int) {
         match key {
-            "ArrowUp"    => self.actions.insert(String::from("ArrowUp"), int_to_bool(b)),
-            "ArrowDown"  => self.actions.insert(String::from("ArrowDown"), int_to_bool(b)),
-            "ArrowRight" => self.actions.insert(String::from("ArrowRight"), int_to_bool(b)),
-            "ArrowLeft"  => self.actions.insert(String::from("ArrowLeft"), int_to_bool(b)),
-            " "          => self.actions.insert(String::from("Space"), int_to_bool(b)),
-            "w"          => self.actions.insert(String::from("w"), int_to_bool(b)),
-            "s"          => self.actions.insert(String::from("s"), int_to_bool(b)),
-            "a"          => self.actions.insert(String::from("a"), int_to_bool(b)),
-            "d"          => self.actions.insert(String::from("d"), int_to_bool(b)),
-            "m"          => self.actions.insert(String::from("m"), int_to_bool(b)),
+            "ArrowUp"    => self.actions.insert(String::from("up1"), int_to_bool(b)),
+            "ArrowDown"  => self.actions.insert(String::from("down1"), int_to_bool(b)),
+            "ArrowRight" => self.actions.insert(String::from("right1"), int_to_bool(b)),
+            "ArrowLeft"  => self.actions.insert(String::from("left1"), int_to_bool(b)),
+            " "          => self.actions.insert(String::from("a1"), int_to_bool(b)),
+            "w"          => self.actions.insert(String::from("up2"), int_to_bool(b)),
+            "s"          => self.actions.insert(String::from("down2"), int_to_bool(b)),
+            "d"          => self.actions.insert(String::from("right2"), int_to_bool(b)),
+            "a"          => self.actions.insert(String::from("left2"), int_to_bool(b)),
+            "m"          => self.actions.insert(String::from("a2"), int_to_bool(b)),
+            "1"          => self.actions.insert(String::from("up3"), int_to_bool(b)),
+            "2"          => self.actions.insert(String::from("down3"), int_to_bool(b)),
+            "3"          => self.actions.insert(String::from("right3"), int_to_bool(b)),
+            "4"          => self.actions.insert(String::from("left3"), int_to_bool(b)),
+            "5"          => self.actions.insert(String::from("a4"), int_to_bool(b)),
+            "6"          => self.actions.insert(String::from("up4"), int_to_bool(b)),
+            "7"          => self.actions.insert(String::from("down4"), int_to_bool(b)),
+            "8"          => self.actions.insert(String::from("right4"), int_to_bool(b)),
+            "9"          => self.actions.insert(String::from("left4"), int_to_bool(b)),
+            "0"          => self.actions.insert(String::from("a4"), int_to_bool(b)),
                        _ => None,
         };
     }

@@ -1,4 +1,4 @@
-use crate::geometry::{Point, Size};
+use crate::geometry::{Point, Size, Position};
 use crate::controller::{Actions, Controller, Event, EventType};
 use crate::models::Bomb;
 use crate::models::Wall;
@@ -13,8 +13,12 @@ pub struct Player {
     on_bomb: [bool; 5],//Vecが望まし
     bomb_count: i32,
     point: Point,
+    dir : String,
+    idle: bool,
+    walk_count: i32,
+    prev_dir: String,
     speed: f64,
-    radius: f64,
+    radius: i32,
     controller: Controller,
 
 }
@@ -23,42 +27,77 @@ impl Player {
     /// Create a new `Player` with a random position and direction
     pub fn new(id: i32, point: Point, controller: Controller) -> Self {
         let speed: f64 = 80.0;
-        let radius: f64 = 24.0;
+        let radius: i32 = 24;
         let on_bomb: [bool; 5] = [false,false,false,false,false];
+
         Player {
             id: id,
             alive: true,
             on_bomb: on_bomb,
             bomb_count: 0,
             point: point,
+            dir : String::from("down"),
+            prev_dir: String::from("down"),
+            idle: true,
+            walk_count: 0,
             speed: speed,
             radius: radius,
             controller: controller,
+
         }
     }
     pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<EventType>){
+        let mut x = 0;
+        let mut y = 0;
+
 
         if actions.get(&self.controller.Up) == Some(&true) {
-            self.point.y -= dt * self.speed;
+            y -= (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Down) == Some(&true) {
-            self.point.y += dt * self.speed;
+            y += (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Right) == Some(&true) {
-            self.point.x += dt * self.speed;
+            x += (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Left) == Some(&true) {
-            self.point.x -= dt * self.speed;
+            x -= (dt * self.speed) as i32;
         }
+        self.point.y += y;
+        self.point.x += x;
+        if (y < 0){
+            self.idle=false;
+            self.dir = "up".to_string();
+        }else if (y > 0){
+            self.idle=false;
+            self.dir = "down".to_string();
+        }else if (x > 0){
+            self.idle=false;
+            self.dir = "right".to_string();
+        }else if (x < 0){
+            self.idle=false;
+            self.dir = "left".to_string();
+        }else{
+            self.idle=true;
+        }
+
+        if (&self.prev_dir == &self.dir){
+        }else {
+            self.prev_dir =  String::from(&self.dir.clone());
+        }
+
+
+
+
         if actions.get(&self.controller.A) == Some(&true) {
             self.on_bomb[(self.bomb_count) as usize]=true;
 
          //   let new_bomb = Bomb::new(200+self.id%10*10+self.bomb_count,((self.point.x) as i32 / 50*50 + 25)as f64,((self.point.y) as i32 /50*50 + 25) as f64);
-        let x = ((self.point.x) as i32 / 50*50 + 25)as f64;
-        let y = ((self.point.y) as i32 /50*50 + 25) as f64;
+        let x = self.point.x  / 50*50 + 25;
+        let y = self.point.y  /50*50 + 25;
         let id = 200+self.id%10*10+self.bomb_count;
 
             event.push(EventType::SetBomb{id,x,y});
@@ -67,8 +106,29 @@ impl Player {
         }
 
     }
-    pub fn draw(&self){
-        draw_player(self.point.x, self.point.y);
+    pub fn draw(&mut self){
+
+        let mut y = 0;
+        let mut x = 0;
+
+        if (self.idle == true) {self.walk_count = 0;}
+        else {self.walk_count += self.speed as i32;}
+        //log(&self.walk_count.to_string());
+
+        // draw_player(self.point.x, self.point.y);
+        if (self.dir == "up"){y=2}
+        if (self.dir == "down"){y=0}
+        if (self.dir == "left"){y=1}
+        if (self.dir == "right"){y=3}
+
+        if (self.walk_count > 0) {x=2}
+        if (self.walk_count > 800) {x=1}
+        if (self.walk_count > 1600) {x=0}
+        if (self.walk_count > 2400) {x=1; self.walk_count=-9;}
+
+        let id = "player".to_string() + &self.id.to_string();
+        draw_player_animation(&id, x, y, self.point.x, self.point.y); 
+//        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking); 
     }
 
     pub fn collide_with_bomb(&mut self,obj: &Bomb) -> i32 {
@@ -125,49 +185,62 @@ impl Player {
         //xとy，objとの差が大きいほうが衝突値
         //衝突値の差分をリサイズする
         if actions.get(&self.controller.Up) == Some(&true) {
-            self.point.y += dt * self.speed;
+            self.point.y += (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Down) == Some(&true) {
-            self.point.y -= dt * self.speed;
+            self.point.y -= (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Right) == Some(&true) {
-            self.point.x -= dt * self.speed;
+            self.point.x -= (dt * self.speed) as i32;
         }
 
         if actions.get(&self.controller.Left) == Some(&true) {
-            self.point.x += dt * self.speed;
+            self.point.x += (dt * self.speed) as i32;
         }
         if (self.point.x - obj_point.x > self.radius) & ((actions.get(&self.controller.Up) == Some(&true)) | (actions.get(&self.controller.Down) == Some(&true))){
-            self.point.x += dt * self.speed;
+            self.point.x += (dt * self.speed) as i32;
         }
         if (obj_point.x - self.point.x > self.radius) & ((actions.get(&self.controller.Up) == Some(&true)) | (actions.get(&self.controller.Down) == Some(&true))){
-            self.point.x -= dt * self.speed;
+            self.point.x -= (dt * self.speed) as i32;
         }
         if (self.point.y - obj_point.y > self.radius) & ((actions.get(&self.controller.Left) == Some(&true)) | (actions.get(&self.controller.Right) == Some(&true))){
-            self.point.y += dt * self.speed;
+            self.point.y += (dt * self.speed) as i32;
         }
         if (obj_point.y - self.point.y > self.radius) & ((actions.get(&self.controller.Left) == Some(&true))| (actions.get(&self.controller.Right) == Some(&true))){
-            self.point.y -= dt * self.speed;
+            self.point.y -= (dt * self.speed) as i32;
         }
     }
+}
+
+
+impl Position for Player{
+    fn x(&self) -> i32{
+        self.point.x
+
+    }
+    fn y(&self) -> i32{
+        self.point.y
+
+    }
+
 }
 
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_player(x: f64, y: f64);
+    pub fn draw_player(x: i32, y: i32);
+    pub fn draw_player_animation(id: &str,recX:i32, recY:i32, x: i32, y: i32);
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
 }
 #[wasm_bindgen]
 extern {
     pub fn alert(s: &str);
-}
-#[wasm_bindgen]
-extern "C" {
-    // Use `js_namespace` here to bind `console.log(..)` instead of just
-    //     // `log(..)`
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
 }

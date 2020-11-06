@@ -1,2 +1,4 @@
 /target
 *.swp
+/www/image/*
+*.DS_Store
