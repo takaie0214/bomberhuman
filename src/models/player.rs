@@ -182,8 +182,6 @@ impl Player {
     }
 
     pub fn relocate(&mut self, dt: f64, actions: &HashMap<String, bool>, obj_point: &Point) {
-        //xとy，objとの差が大きいほうが衝突値
-        //衝突値の差分をリサイズする
         if actions.get(&self.controller.Up) == Some(&true) {
             self.point.y += (dt * self.speed) as i32;
         }

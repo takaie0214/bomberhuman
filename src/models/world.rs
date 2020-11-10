@@ -1,5 +1,8 @@
 use crate::geometry::{Point, Size, Position};
-use crate::models::{Bomb, Player,Wall};
+use rand::Rng;
+use pcg_rand::Pcg32Basic;
+use rand::SeedableRng;
+use crate::models::{Player, Bomb, Wall,  Block, Fire};
 use std::collections::HashMap;
 use crate::controller::{Actions, Controller, Event, EventType};
 
@@ -8,6 +11,8 @@ pub struct World {
     pub players: Vec<Player>,
     pub bomb: Vec<Bomb>,
     pub walls: Vec<Wall>,
+    pub blocks: Vec<Block>,
+    pub fire: Vec<Fire>,
     pub size: Size,
     pub event: Vec<EventType>,
 }
@@ -50,6 +55,20 @@ impl World {
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 
+        let block_bmp = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,0,1,0,1,0,1,0,1,0,1,0,0,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,0,1,0,1,0,1,0,1,0,1,0,0,0],
+        [0,0,0,1,1,1,1,1,1,1,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+
         let mut walls = Vec::new();
         for (index1, val1) in wall_bmp.iter().enumerate() {
             for (index2, val2)in val1.iter().enumerate() {
@@ -59,11 +78,24 @@ impl World {
             }
         }
 
+        let mut blocks = Vec::new();
+        let mut rng = Pcg32Basic::from_seed([42, 42]);
+        for (index1, val1) in block_bmp.iter().enumerate(){
+            for (index2,val2) in val1.iter().enumerate(){
+                if (*val2 == 1 && rng.gen_range(0, 9) > 0) {
+                    blocks.push(Block::new(Point::new(50 * index2 as i32 + 25, 50 * index1 as i32 + 25)));
+                }
+            }
+        }
+
+        let mut fire = Vec::new();
 
         World {
             players: players,
             bomb: vec![],
             walls: walls,
+            blocks: blocks,
+            fire: fire,
             size: size,
             event: vec![],
         }
@@ -75,6 +107,9 @@ impl World {
         }
         for b in &mut self.bomb {
             b.update(dt,  &mut self.event);
+        }
+        for f in &mut self.fire {
+            f.update(dt,  &mut self.event);
         }
         match self.event.pop() {
             None => (),
@@ -88,7 +123,13 @@ impl World {
                         }
                         self.bomb.push(Bomb::new(id,x,y));
                     },
-                    EventType::Explosion => (),
+                    EventType::Explosion{id, x, y, dir} => {
+                        self.bomb.retain(|elem| elem.id != id);
+                        self.fire.push(Fire::new(id, x, y, dir));
+                    }
+                    EventType::Disappearance{id} => {
+                        self.fire.retain(|elem| elem.id != id);
+                    }
                 }
         }
     }
@@ -101,6 +142,12 @@ impl World {
         }
         for b in &self.bomb {
             b.draw();
+        }
+        for b in &self.blocks {
+            b.draw();
+        }
+        for f in &self.fire {
+            f.draw();
         }
     }
 }

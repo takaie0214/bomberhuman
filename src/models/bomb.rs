@@ -1,4 +1,4 @@
-use crate::geometry::{Point, Size, Position};
+use crate::geometry::{Point, Size, Position, Dir};
 
 use crate::controller::{Actions, Controller, Event, EventType};
 
@@ -15,14 +15,18 @@ impl Bomb {
             id: id,
             radius: 24,
             point: Point::new(x,y),
-            ttl: 100.0,
+            ttl: 5.0,
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  Vec<EventType>) {
         self.ttl -= dt;
-//        if (self.ttl < 0) {
-//            event.push(EventType::Explosion);
-//        }
+        if (self.ttl < 0.0) {
+            let id = self.id;
+            let x =  self.x();
+            let y =  self.y();
+            let dir = Dir::new(3, 3, 3, 3);
+            event.push(EventType::Explosion{id, x, y, dir});
+        }
     }
     pub fn draw(&self){
         let mut x = 0;

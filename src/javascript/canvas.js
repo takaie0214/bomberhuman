@@ -19,8 +19,9 @@ let image_list = [
     {id:"player3", src: "image/yukari.png",reg: {x: 48, y: 48}},
     {id:"player4", src: "image/maki.png",  reg: {x: 48, y: 48}},
     {id:"bomb"   , src: "image/bomb.png",  reg: {x: 416, y: 416}},
-    {id:"wall"   , src: "image/wall.png",reg: {x: 602, y: 602}},
-    {id:"sblock" , src: "image/sblock.png",reg: {x: 317, y: 317}},
+    {id:"wall"   , src: "image/wall.png",  reg: {x: 602, y: 602}},
+    {id:"block"  , src: "image/sblock.png",reg: {x: 317, y: 317}},
+    {id:"fire"   , src: "image/fire.png",  reg: {x:177, y:177}},
 
 ];
 
@@ -113,8 +114,12 @@ export function draw_wall(x, y) {
     sprite.draw("wall", 0, 0, x-25, y-25);
 }
 
-export function draw_sblock(x, y) {
-    sprite.draw("sblock", 0, 0, x-25, y-25);
+export function draw_block(x, y) {
+    sprite.draw("block", 0, 0, x-25, y-25);
+}
+
+export function draw_fire(recx, recy, x, y) {
+    sprite.draw("fire", recx, recy, x-25, y-25);
 }
 
 export function clear_screen() {
