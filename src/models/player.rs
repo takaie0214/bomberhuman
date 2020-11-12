@@ -1,7 +1,6 @@
 use crate::geometry::{Point, Size, Position};
 use crate::controller::{Actions, Controller, Event, EventType};
-use crate::models::Bomb;
-use crate::models::Wall;
+use crate::models::{Bomb, Wall, Block, Fire};
 use std::collections::HashMap;
 //use crate::controller::Actions;
 
@@ -180,6 +179,40 @@ impl Player {
         //     return 0;
         // }
     }
+    pub fn collide_with_block(&self,obj: &Block) -> i32 {
+        let radii = self.radius + obj.radius;
+        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
+            return (self.id / 100 * 10 + obj.id / 100);
+        }
+        else {
+            return 0;
+        }
+        // if (self.point.squared_distance_to(&obj.point) < radii * radii){
+        //     return (self.id / 100 * 10 + obj.id / 100); //playerid 10X, bombid 20X, wallid 30X
+        // }
+        // else {
+        //     return 0;
+        // }
+    }
+    pub fn collide_with_fire(&self,obj: &Fire) -> i32 {
+        let radii = self.radius + obj.radius;
+        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
+            return (self.id / 100 * 10 + obj.id / 100);
+        }
+        else {
+            return 0;
+        }
+        // if (self.point.squared_distance_to(&obj.point) < radii * radii){
+        //     return (self.id / 100 * 10 + obj.id / 100); //playerid 10X, bombid 20X, wallid 30X
+        // }
+        // else {
+        //     return 0;
+        // }
+    }
+    pub fn die(&mut self) {
+        self.alive = false;
+    }
+
 
     pub fn relocate(&mut self, dt: f64, actions: &HashMap<String, bool>, obj_point: &Point) {
         if actions.get(&self.controller.Up) == Some(&true) {

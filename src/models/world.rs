@@ -111,26 +111,28 @@ impl World {
         for f in &mut self.fire {
             f.update(dt,  &mut self.event);
         }
-        match self.event.pop() {
-            None => (),
-            Some(T) =>
-                match T {
-                    EventType::SetBomb{id,x,y} => {
-                        for b in &self.bomb{
-                            if (b.point.x == x && b.point.y == y){
-                                return ();
+        while self.event.len() != 0 {
+            match self.event.pop() {
+                None => (),
+                Some(T) =>
+                    match T {
+                        EventType::SetBomb{id,x,y} => {
+                            for b in &self.bomb{
+                                if (b.point.x == x && b.point.y == y){
+                                    return ();
+                                }
                             }
+                            self.bomb.push(Bomb::new(id,x,y));
+                        },
+                        EventType::Explosion{id, x, y, dir} => {
+                            self.bomb.retain(|elem| elem.id != id);
+                            self.fire.push(Fire::new(id, x, y, dir));
                         }
-                        self.bomb.push(Bomb::new(id,x,y));
-                    },
-                    EventType::Explosion{id, x, y, dir} => {
-                        self.bomb.retain(|elem| elem.id != id);
-                        self.fire.push(Fire::new(id, x, y, dir));
+                        EventType::Disappearance{id} => {
+                            self.fire.retain(|elem| elem.id != id);
+                        }
                     }
-                    EventType::Disappearance{id} => {
-                        self.fire.retain(|elem| elem.id != id);
-                    }
-                }
+            }
         }
     }
     pub fn draw(&mut self){

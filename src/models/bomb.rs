@@ -21,7 +21,7 @@ impl Bomb {
     pub fn update(&mut self, dt: f64, event: &mut  Vec<EventType>) {
         self.ttl -= dt;
         if (self.ttl < 0.0) {
-            let id = self.id;
+            let id = self.id - 200 + 500;
             let x =  self.x();
             let y =  self.y();
             let dir = Dir::new(3, 3, 3, 3);

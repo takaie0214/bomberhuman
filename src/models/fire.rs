@@ -4,6 +4,7 @@ use crate::controller::{Actions, Controller, Event, EventType};
 
 pub struct Fire {
     pub id: i32,
+    pub radius: i32,
     pub point: Point,
     pub ttl: f64,
     pub dir: Dir,
@@ -12,6 +13,7 @@ pub struct Fire {
 impl Fire {
     pub fn new(id: i32, x: i32, y: i32, dir: Dir) -> Self {
         Fire {
+            radius: 24,
             id: id,
             point: Point::new(x,y),
             ttl: 1.6,
