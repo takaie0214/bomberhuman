@@ -88,7 +88,7 @@ impl World {
             }
         }
 
-        let mut fire = Vec::new();
+        let fire = Vec::new();
 
         World {
             players: players,
@@ -108,14 +108,17 @@ impl World {
         for b in &mut self.bomb {
             b.update(dt,  &mut self.event);
         }
+        for b in &mut self.blocks {
+            b.update();
+        }
         for f in &mut self.fire {
             f.update(dt,  &mut self.event);
         }
         while self.event.len() != 0 {
             match self.event.pop() {
                 None => (),
-                Some(T) =>
-                    match T {
+                Some(event) =>
+                    match event {
                         Event::SetBomb{id,x,y} => {
                             for b in &self.bomb{
                                 if b.point.x == x && b.point.y == y {

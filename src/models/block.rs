@@ -17,7 +17,7 @@ impl Block{
         }
     }
 
-    pub fn update() {
+    pub fn update(&self) {
         //new Item
     }
 

@@ -1,7 +1,7 @@
 mod geometry;
 mod controller;
 mod models;
-mod utils;
+//mod utils;
 
 use wasm_bindgen::prelude::*;
 
@@ -44,7 +44,7 @@ impl GameState {
         self.world.draw();
     }
 
-    pub fn processKey(&mut self, key: &str, b: c_int) {
+    pub fn processkey(&mut self, key: &str, b: c_int) {
         match key {
             "ArrowUp"    => self.actions.insert(String::from("up1"), int_to_bool(b)),
             "ArrowDown"  => self.actions.insert(String::from("down1"), int_to_bool(b)),

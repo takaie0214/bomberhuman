@@ -2,8 +2,8 @@ import { GameState } from "bomberhuman";
 
 const gamestate = GameState.new(600, 300);
 
-document.addEventListener('keydown', e => gamestate.processKey(e.key, true));
-document.addEventListener('keyup', e => gamestate.processKey(e.key, false));
+document.addEventListener('keydown', e => gamestate.processkey(e.key, true));
+document.addEventListener('keyup', e => gamestate.processkey(e.key, false));
 
 
 var start = null;
@@ -20,8 +20,8 @@ const renderLoop = (timestamp) => {
 
     // Update and draw
     let progress = (timestamp - prevTimestamp) / 1000;
-    gamestate.update(progress); 
-    gamestate.draw(); 
+    gamestate.update(progress);
+    gamestate.draw();
 
     // Some bookkeeping
     prevTimestamp = timestamp;

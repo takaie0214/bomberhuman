@@ -25,32 +25,32 @@ impl Fire {
         if self.dir.up > 0 {
             let x = self.x();
             let y = self.y() - 50;
-            let mut dir = self.dir.up - 1;
+            let dir = self.dir.up - 1;
             let new_dir = Dir::new(dir, 0, 0, 0);
             event.push(Event::Explosion{id: id, x: x, y: y, dir:new_dir});
             self.dir.up = 0;
         }
         if self.dir.down > 0 {
-            let mut x = self.x();
-            let mut y = self.y() + 50;
-            let mut dir = self.dir.down - 1;
-            let mut new_dir = Dir::new(0, dir, 0, 0);
+            let  x = self.x();
+            let  y = self.y() + 50;
+            let dir = self.dir.down - 1;
+            let new_dir = Dir::new(0, dir, 0, 0);
             event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
             self.dir.down= 0;
         }
         if self.dir.right > 0 {
-            let mut x = self.x() + 50;
-            let mut y = self.y();
-            let mut dir = self.dir.right - 1;
-            let mut new_dir = Dir::new( 0, 0, dir, 0);
+            let x = self.x() + 50;
+            let y = self.y();
+            let dir = self.dir.right - 1;
+            let new_dir = Dir::new( 0, 0, dir, 0);
             event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
             self.dir.right = 0;
         }
         if self.dir.left > 0 {
-            let mut x = self.x() - 50;
-            let mut y = self.y();
-            let mut dir = self.dir.left- 1;
-            let mut new_dir = Dir::new(0, 0, 0, dir);
+            let x = self.x() - 50;
+            let y = self.y();
+            let dir = self.dir.left- 1;
+            let new_dir = Dir::new(0, 0, 0, dir);
             event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
             self.dir.left = 0;
         }
@@ -62,7 +62,7 @@ impl Fire {
     }
     pub fn draw(&self){
         let mut x = 0;
-        let mut y = 0;
+        let y = 0;
 
         if self.ttl < 0.4 {
             x = 3;
