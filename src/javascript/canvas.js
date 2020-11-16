@@ -14,14 +14,14 @@ class Rectangle{
 }
 
 let image_list = [
-    {id:"player1", src: "image/akane.png", reg: {x: 48, y: 48}},
-    {id:"player2", src: "image/aoi.png",   reg: {x: 48, y: 48}},
-    {id:"player3", src: "image/yukari.png",reg: {x: 48, y: 48}},
-    {id:"player4", src: "image/maki.png",  reg: {x: 48, y: 48}},
-    {id:"bomb"   , src: "image/bomb.png",  reg: {x: 416, y: 416}},
-    {id:"wall"   , src: "image/wall.png",  reg: {x: 602, y: 602}},
-    {id:"block"  , src: "image/sblock.png",reg: {x: 317, y: 317}},
-    {id:"fire"   , src: "image/fire.png",  reg: {x:177, y:177}},
+    {id:"player1", src: "image/1012010501.png", reg: {x: 47, y: 47}},
+    {id:"player2", src: "image/1087010501.png", reg: {x: 47, y: 47}},
+    {id:"player3", src: "image/1104010501.png", reg: {x: 47, y: 47}},
+    {id:"player4", src: "image/1114010501.png", reg: {x: 47, y: 47}},
+    {id:"bomb"   , src: "image/bomb.png",       reg: {x: 416, y: 416}},
+    {id:"wall"   , src: "image/wall.png",       reg: {x: 602, y: 602}},
+    {id:"block"  , src: "image/sblock.png",     reg: {x: 317, y: 317}},
+    {id:"fire"   , src: "image/fire.png",       reg: {x:177, y:177}},
 
 ];
 
@@ -46,10 +46,10 @@ class Sprite{
             }
         }
         var img = this.images[index];
-        ctx.drawImage(img.image, 
-            img.reg.x * recx, img.reg.y * recy, 
+        ctx.drawImage(img.image,
+            img.reg.x * recx, img.reg.y * recy,
             img.reg.x, img.reg.y,
-            x, y, 
+            x, y,
             50, 50);
     }
 }

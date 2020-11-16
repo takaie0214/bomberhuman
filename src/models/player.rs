@@ -114,17 +114,17 @@ impl Player {
         //log(&self.walk_count.to_string());
 
         // draw_player(self.point.x, self.point.y);
-        if self.dir == "up" {y=2}
+        if self.dir == "up" {y=3}
         if self.dir == "down" {y=0}
         if self.dir == "left" {y=1}
-        if self.dir == "right" {y=3}
+        if self.dir == "right" {y=2}
 
         if self.walk_count > 0  {x=2}
         if self.walk_count > 800  {x=1}
         if self.walk_count > 1600  {x=0}
         if self.walk_count > 2400  {x=1; self.walk_count=-9;}
 
-        let id = "player".to_string() + &self.id.to_string();
+        let id = "player".to_string() + &(self.id-100).to_string();
         draw_player_animation(&id, x, y, self.point.x, self.point.y); 
 //        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking); 
     }
