@@ -1,4 +1,4 @@
-use crate::geometry::{Point, Size};
+use crate::geometry::Point;
 
 pub struct Wall {
     pub point: Point,

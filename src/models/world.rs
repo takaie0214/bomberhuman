@@ -1,10 +1,10 @@
-use crate::geometry::{Point, Size, Position};
+use crate::geometry::{Point, Size};
 use rand::Rng;
 use pcg_rand::Pcg32Basic;
 use rand::SeedableRng;
 use crate::models::{Player, Bomb, Wall,  Block, Fire};
 use std::collections::HashMap;
-use crate::controller::{Actions, Controller, Event};
+use crate::controller::{Controller, Event};
 
 /// A model that contains the other models and renders them
 pub struct World {
@@ -22,22 +22,22 @@ impl World {
         let mut players = Vec::new();
 
         let id1 = 101;
-        let mut point1 = Point::new(75, 75);
+        let point1 = Point::new(75, 75);
         let controller1 = Controller::new("up1","down1","right1","left1", "a1");
         players.push(Player::new(id1, point1, controller1));
 
         let id2 = 102;
-        let mut point2 = Point::new(675, 575);
+        let point2 = Point::new(675, 575);
         let controller2 = Controller::new("up2","down2","right2","left2", "a2");
         players.push(Player::new(id2, point2, controller2));
 
         let id3 = 103;
-        let mut point3 = Point::new(675, 75);
+        let point3 = Point::new(675, 75);
         let controller3 = Controller::new("up3","down3","right3","left3", "a3");
         players.push(Player::new(id3, point3, controller3));
 
         let id4 = 104;
-        let mut point4 = Point::new(75, 575);
+        let point4 = Point::new(75, 575);
         let controller4 = Controller::new("up4","down4","right4","left4", "a4");
         players.push(Player::new(id4, point4, controller4));
 
@@ -71,8 +71,8 @@ impl World {
 
         let mut walls = Vec::new();
         for (index1, val1) in wall_bmp.iter().enumerate() {
-            for (index2, val2)in val1.iter().enumerate() {
-                if (*val2 == 1) {
+            for (index2, val2) in val1.iter().enumerate() {
+                if *val2 == 1 {
                     walls.push(Wall::new(Point::new(50 * index2 as i32 + 25, 50 * index1 as i32 + 25)));
                 }
             }
@@ -82,7 +82,7 @@ impl World {
         let mut rng = Pcg32Basic::from_seed([42, 42]);
         for (index1, val1) in block_bmp.iter().enumerate(){
             for (index2,val2) in val1.iter().enumerate(){
-                if (*val2 == 1 && rng.gen_range(0, 9) > 0) {
+                if *val2 == 1 && rng.gen_range(0, 9) > 0 {
                     blocks.push(Block::new(Point::new(50 * index2 as i32 + 25, 50 * index1 as i32 + 25)));
                 }
             }
@@ -118,7 +118,7 @@ impl World {
                     match T {
                         Event::SetBomb{id,x,y} => {
                             for b in &self.bomb{
-                                if (b.point.x == x && b.point.y == y){
+                                if b.point.x == x && b.point.y == y {
                                     return ();
                                 }
                             }

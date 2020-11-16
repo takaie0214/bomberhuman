@@ -1,4 +1,4 @@
-use crate::geometry::{Point, Size};
+use crate::geometry::Point;
 
 pub struct Block {
     pub point: Point,

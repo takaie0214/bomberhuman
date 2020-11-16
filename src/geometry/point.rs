@@ -1,8 +1,8 @@
-use rand::Rng;
+//use rand::Rng;
 
-use super::Size;
+//use super::Size;
 
-use std::ops::{Add, Sub, Mul, Div};
+//use std::ops::{Add, Sub, Mul, Div};
 
 /// A `Point` represents a position in space
 #[derive(Clone, Default, Copy)]

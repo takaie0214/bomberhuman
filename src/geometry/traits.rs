@@ -1,4 +1,3 @@
-use super::{Point, Size};
 
 /// A trait for objects that occupy a position in space
 pub trait Position {

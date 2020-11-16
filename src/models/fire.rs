@@ -1,6 +1,6 @@
-use crate::geometry::{Point, Size, Position, Dir};
+use crate::geometry::{Point, Position, Dir};
 
-use crate::controller::{Actions, Controller, Event};
+use crate::controller::Event;
 
 pub struct Fire {
     pub id: i32,
@@ -56,7 +56,7 @@ impl Fire {
         }
 
         self.ttl -= dt;
-        if (self.ttl < 0.0) {
+        if self.ttl < 0.0 {
             event.push(Event::Disappearance{id});
         }
     }
@@ -64,11 +64,11 @@ impl Fire {
         let mut x = 0;
         let mut y = 0;
 
-        if (self.ttl < 0.4){
+        if self.ttl < 0.4 {
             x = 3;
-        }else if (self.ttl < 0.8) {
+        }else if self.ttl < 0.8 {
             x = 2;
-        }else if (self.ttl < 1.2) {
+        }else if self.ttl < 1.2 {
             x = 1;
         }
 

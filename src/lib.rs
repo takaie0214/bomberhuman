@@ -12,12 +12,11 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 use self::geometry::Size;
-use self::controller::Actions;
 use self::models::World;
 use self::controller::Collision;
 use std::collections::HashMap;
 
-use std::os::raw::{c_double, c_int};
+use std::os::raw::c_int;
 
 #[wasm_bindgen] struct GameState {
     // The world contains everything that needs to be drawn

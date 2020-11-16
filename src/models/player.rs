@@ -1,8 +1,7 @@
-use crate::geometry::{Point, Size, Position};
-use crate::controller::{Actions, Controller, Event};
+use crate::geometry::{Point, Position};
+use crate::controller::{Controller, Event};
 use crate::models::{Bomb, Wall, Block, Fire};
 use std::collections::HashMap;
-//use crate::controller::Actions;
 
 /// The `Player` is the rocket controlled by the user
 //#[derive(Default)]
@@ -67,23 +66,23 @@ impl Player {
         }
         self.point.y += y;
         self.point.x += x;
-        if (y < 0){
+        if y < 0{
             self.idle=false;
             self.dir = "up".to_string();
-        }else if (y > 0){
+        }else if y > 0 {
             self.idle=false;
             self.dir = "down".to_string();
-        }else if (x > 0){
+        }else if x > 0 {
             self.idle=false;
             self.dir = "right".to_string();
-        }else if (x < 0){
+        }else if x < 0 {
             self.idle=false;
             self.dir = "left".to_string();
         }else{
             self.idle=true;
         }
 
-        if (&self.prev_dir == &self.dir){
+        if &self.prev_dir == &self.dir {
         }else {
             self.prev_dir =  String::from(&self.dir.clone());
         }
@@ -110,20 +109,20 @@ impl Player {
         let mut y = 0;
         let mut x = 0;
 
-        if (self.idle == true) {self.walk_count = 0;}
+        if self.idle == true {self.walk_count = 0;}
         else {self.walk_count += self.speed as i32;}
         //log(&self.walk_count.to_string());
 
         // draw_player(self.point.x, self.point.y);
-        if (self.dir == "up"){y=2}
-        if (self.dir == "down"){y=0}
-        if (self.dir == "left"){y=1}
-        if (self.dir == "right"){y=3}
+        if self.dir == "up" {y=2}
+        if self.dir == "down" {y=0}
+        if self.dir == "left" {y=1}
+        if self.dir == "right" {y=3}
 
-        if (self.walk_count > 0) {x=2}
-        if (self.walk_count > 800) {x=1}
-        if (self.walk_count > 1600) {x=0}
-        if (self.walk_count > 2400) {x=1; self.walk_count=-9;}
+        if self.walk_count > 0  {x=2}
+        if self.walk_count > 800  {x=1}
+        if self.walk_count > 1600  {x=0}
+        if self.walk_count > 2400  {x=1; self.walk_count=-9;}
 
         let id = "player".to_string() + &self.id.to_string();
         draw_player_animation(&id, x, y, self.point.x, self.point.y); 
@@ -135,8 +134,8 @@ impl Player {
         // if (((self.point.x - obj.point.x).abs() < 47.0) & ((self.point.y - obj.point.y).abs() < 47.0)){
         //     return 0;
         // }
-        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
-            if ((self.id%10 == obj.id%100/10) & (self.on_bomb[(obj.id%10) as usize])){
+        if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
+            if (self.id%10 == obj.id%100/10) & (self.on_bomb[(obj.id%10) as usize]){
                 // let test = self.id;
                 // let testa = obj.id;
                 // log(&test.to_string());
@@ -144,12 +143,12 @@ impl Player {
                 return 0;
             }
             else {
-                return (self.id / 100 * 10 + obj.id / 100);
+                return self.id / 100 * 10 + obj.id / 100;
 
             }
         }
         else {
-            if (self.id%10 == obj.id%100/10){
+            if self.id%10 == obj.id%100/10{
                 self.on_bomb[(obj.id%10) as usize] = false;
             }
             return 0;
@@ -166,8 +165,8 @@ impl Player {
 
     pub fn collide_with_wall(&self,obj: &Wall) -> i32 {
         let radii = self.radius + obj.radius;
-        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
-            return (self.id / 100 * 10 + obj.id / 100);
+        if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
+            return self.id / 100 * 10 + obj.id / 100;
         }
         else {
             return 0;
@@ -181,8 +180,8 @@ impl Player {
     }
     pub fn collide_with_block(&self,obj: &Block) -> i32 {
         let radii = self.radius + obj.radius;
-        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
-            return (self.id / 100 * 10 + obj.id / 100);
+        if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
+            return self.id / 100 * 10 + obj.id / 100;
         }
         else {
             return 0;
@@ -196,8 +195,8 @@ impl Player {
     }
     pub fn collide_with_fire(&self,obj: &Fire) -> i32 {
         let radii = self.radius + obj.radius;
-        if (((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii)){
-            return (self.id / 100 * 10 + obj.id / 100);
+        if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
+            return self.id / 100 * 10 + obj.id / 100;
         }
         else {
             return 0;

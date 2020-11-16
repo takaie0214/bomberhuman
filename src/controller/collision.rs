@@ -1,7 +1,5 @@
-use crate::models::{World, Player, Bomb, Wall, Block, Fire};
-use crate::controller::Actions;
+use crate::models::{World, Player, Bomb, Wall, Block};
 use std::collections::HashMap;
-use crate::geometry::Point;
 
 use wasm_bindgen::prelude::*;
 
@@ -52,7 +50,7 @@ impl Collision {
             }
             for f in world.fire.iter(){
                 match p.collide_with_fire(f){
-                    15 => player_to_fire(p,f,dt,actions),
+                    15 => player_to_fire(p),
                     _ => (),
                 }
             }
@@ -60,12 +58,12 @@ impl Collision {
         }
         for f in world.fire.iter_mut(){
             for o in world.bomb.iter_mut(){
-                if ((f.point.x == o.point.x) && (f.point.y == o.point.y)) {
+                if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
                     o.ttl = 0.0;
                 }
             }
             for o in world.walls.iter(){
-                if ((f.point.x == o.point.x) && (f.point.y == o.point.y)) {
+                if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
                     f.dir.up = 0;
                     f.dir.down= 0;
                     f.dir.right= 0;
@@ -73,7 +71,7 @@ impl Collision {
                 }
             }
             for o in world.blocks.iter(){
-                if ((f.point.x == o.point.x) && (f.point.y == o.point.y)) {
+                if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
                     f.dir.up = 0;
                     f.dir.down= 0;
                     f.dir.right= 0;
@@ -96,9 +94,10 @@ pub fn player_to_wall(player: &mut Player, wall: &Wall, dt: f64, actions: &HashM
 pub fn player_to_block(player: &mut Player, block: &Block, dt: f64, actions: &HashMap<String, bool>){
     player.relocate(dt,actions,&block.point);
 }
-pub fn player_to_fire(player: &mut Player, fire: &Fire, dt: f64, actions: &HashMap<String, bool>){
+pub fn player_to_fire(player: &mut Player){
     player.die();
 }
+
 #[wasm_bindgen]
 extern {
     pub fn alert(s: &str);

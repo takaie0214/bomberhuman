@@ -1,6 +1,6 @@
-use crate::geometry::{Point, Size, Position, Dir};
+use crate::geometry::{Point, Position, Dir};
 
-use crate::controller::{Actions, Controller, Event};
+use crate::controller::Event;
 
 pub struct Bomb {
     pub id: i32,
@@ -20,7 +20,7 @@ impl Bomb {
     }
     pub fn update(&mut self, dt: f64, event: &mut  Vec<Event>) {
         self.ttl -= dt;
-        if (self.ttl < 0.0) {
+        if self.ttl < 0.0 {
             let id = self.id - 200 + 500;
             let x =  self.x();
             let y =  self.y();
@@ -30,11 +30,11 @@ impl Bomb {
     }
     pub fn draw(&self){
         let mut x = 0;
-        let mut y = 0;
+        let y = 0;
 
-        if (self.ttl < 1.0){
+        if self.ttl < 1.0{
             x = 2;
-        }else if (self.ttl < 3.0) {
+        }else if self.ttl < 3.0 {
             x = 1;
         }
 
