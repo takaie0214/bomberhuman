@@ -1,4 +1,3 @@
-mod game_state;
 mod geometry;
 mod controller;
 mod models;

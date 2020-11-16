@@ -1,5 +1,5 @@
 use crate::geometry::{Point, Size, Position};
-use crate::controller::{Actions, Controller, Event, EventType};
+use crate::controller::{Actions, Controller, Event};
 use crate::models::{Bomb, Wall, Block, Fire};
 use std::collections::HashMap;
 //use crate::controller::Actions;
@@ -45,7 +45,7 @@ impl Player {
 
         }
     }
-    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<EventType>){
+    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<Event>){
         let mut x = 0;
         let mut y = 0;
 
@@ -99,7 +99,7 @@ impl Player {
         let y = self.point.y  /50*50 + 25;
         let id = 200+self.id%10*10+self.bomb_count;
 
-            event.push(EventType::SetBomb{id,x,y});
+            event.push(Event::SetBomb{id,x,y});
             self.bomb_count += 1;
             self.bomb_count %= 5;
         }

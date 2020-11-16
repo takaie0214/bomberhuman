@@ -4,7 +4,7 @@ use pcg_rand::Pcg32Basic;
 use rand::SeedableRng;
 use crate::models::{Player, Bomb, Wall,  Block, Fire};
 use std::collections::HashMap;
-use crate::controller::{Actions, Controller, Event, EventType};
+use crate::controller::{Actions, Controller, Event};
 
 /// A model that contains the other models and renders them
 pub struct World {
@@ -14,7 +14,7 @@ pub struct World {
     pub blocks: Vec<Block>,
     pub fire: Vec<Fire>,
     pub size: Size,
-    pub event: Vec<EventType>,
+    pub event: Vec<Event>,
 }
 
 impl World {
@@ -116,7 +116,7 @@ impl World {
                 None => (),
                 Some(T) =>
                     match T {
-                        EventType::SetBomb{id,x,y} => {
+                        Event::SetBomb{id,x,y} => {
                             for b in &self.bomb{
                                 if (b.point.x == x && b.point.y == y){
                                     return ();
@@ -124,11 +124,11 @@ impl World {
                             }
                             self.bomb.push(Bomb::new(id,x,y));
                         },
-                        EventType::Explosion{id, x, y, dir} => {
+                        Event::Explosion{id, x, y, dir} => {
                             self.bomb.retain(|elem| elem.id != id);
                             self.fire.push(Fire::new(id, x, y, dir));
                         }
-                        EventType::Disappearance{id} => {
+                        Event::Disappearance{id} => {
                             self.fire.retain(|elem| elem.id != id);
                         }
                     }
