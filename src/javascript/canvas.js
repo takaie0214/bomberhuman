@@ -22,7 +22,9 @@ let image_list = [
     {id:"wall"   , src: "image/wall.png",       reg: {x: 602, y: 602}},
     {id:"block"  , src: "image/sblock.png",     reg: {x: 317, y: 317}},
     {id:"fire"   , src: "image/fire.png",       reg: {x:177, y:177}},
-  {id:"item"   , src: "image/bomb.png",       reg: {x:416,y:416}},
+    {id:"item_fire"   , src: "image/item_fire.png",       reg: {x:277,y:277}},
+    {id:"item_bomb"   , src: "image/item_bomb.png",       reg: {x:277,y:277}},
+    {id:"item_boots"   , src: "image/item_boots.png",       reg: {x:277,y:277}},
 
 ];
 
@@ -123,8 +125,16 @@ export function draw_fire(recx, recy, x, y) {
     sprite.draw("fire", recx, recy, x-25, y-25);
 }
 
-export function draw_item(x,y) {
-    sprite.draw("item", 0, 0, x-25, y-25);
+export function draw_item_fire(x,y) {
+    sprite.draw("item_fire", 0, 0, x-25, y-25);
+}
+
+export function draw_item_bomb(x,y) {
+    sprite.draw("item_bomb", 0, 0, x-25, y-25);
+}
+
+export function draw_item_boots(x,y) {
+    sprite.draw("item_boots", 0, 0, x-25, y-25);
 }
 
 export function clear_screen() {

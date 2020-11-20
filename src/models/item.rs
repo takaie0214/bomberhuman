@@ -30,7 +30,7 @@ impl Item {
         self.alive = false;
     }
     pub fn draw(&self){
-        draw_item(self.point.x, self.point.y);
+        draw_item_boots(self.point.x, self.point.y);
     }
 }
 
@@ -38,7 +38,7 @@ impl Item {
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_item(x: i32, y: i32);
+    pub fn draw_item_boots(x: i32, y: i32);
 }
 
 #[wasm_bindgen]
