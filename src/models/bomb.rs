@@ -1,6 +1,7 @@
 use crate::geometry::{Point, Position, Dir};
 
 use crate::controller::Event;
+use std::collections::VecDeque;
 
 pub struct Bomb {
     pub id: i32,
@@ -18,14 +19,15 @@ impl Bomb {
             ttl: 5.0,
         }
     }
-    pub fn update(&mut self, dt: f64, event: &mut  Vec<Event>) {
+    pub fn update(&mut self, dt: f64, event: &mut  VecDeque<Event>) {
         self.ttl -= dt;
         if self.ttl < 0.0 {
-            let id = self.id - 200 + 500;
+            let bid = self.id;
+            let fid = self.id - 200 + 500;
             let x =  self.x();
             let y =  self.y();
             let dir = Dir::new(3, 3, 3, 3);
-            event.push(Event::Explosion{id, x, y, dir});
+            event.push_back(Event::Explosion{fid, bid, x, y, dir});
         }
     }
     pub fn draw(&self){

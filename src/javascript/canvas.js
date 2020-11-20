@@ -14,14 +14,15 @@ class Rectangle{
 }
 
 let image_list = [
-    {id:"player1", src: "image/1012010501.png", reg: {x: 47, y: 47}},
-    {id:"player2", src: "image/1087010501.png", reg: {x: 47, y: 47}},
-    {id:"player3", src: "image/1104010501.png", reg: {x: 47, y: 47}},
-    {id:"player4", src: "image/1114010501.png", reg: {x: 47, y: 47}},
+    {id:"player1", src: "image/1012010501.png", reg: {x: 49, y: 49}},
+    {id:"player2", src: "image/1087010501.png", reg: {x: 49, y: 49}},
+    {id:"player3", src: "image/1104010501.png", reg: {x: 49, y: 49}},
+    {id:"player4", src: "image/1114010501.png", reg: {x: 49, y: 49}},
     {id:"bomb"   , src: "image/bomb.png",       reg: {x: 416, y: 416}},
     {id:"wall"   , src: "image/wall.png",       reg: {x: 602, y: 602}},
     {id:"block"  , src: "image/sblock.png",     reg: {x: 317, y: 317}},
     {id:"fire"   , src: "image/fire.png",       reg: {x:177, y:177}},
+  {id:"item"   , src: "image/bomb.png",       reg: {x:416,y:416}},
 
 ];
 
@@ -120,6 +121,10 @@ export function draw_block(x, y) {
 
 export function draw_fire(recx, recy, x, y) {
     sprite.draw("fire", recx, recy, x-25, y-25);
+}
+
+export function draw_item(x,y) {
+    sprite.draw("item", 0, 0, x-25, y-25);
 }
 
 export function clear_screen() {

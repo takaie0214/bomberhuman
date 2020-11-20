@@ -1,4 +1,4 @@
-use crate::models::{World, Player, Bomb, Wall, Block};
+use crate::models::{World, Player, Bomb, Wall, Block, Fire, Item};
 use std::collections::HashMap;
 
 use wasm_bindgen::prelude::*;
@@ -54,6 +54,12 @@ impl Collision {
                     _ => (),
                 }
             }
+            for i in world.item.iter_mut(){
+                match p.collide_with_item(i){
+                    16 => player_to_item(p,i),
+                    _ => (),
+                }
+            }
 
         }
         for f in world.fire.iter_mut(){
@@ -68,14 +74,21 @@ impl Collision {
                     f.dir.down= 0;
                     f.dir.right= 0;
                     f.dir.left= 0;
+                    fire_to_wall(f);
                 }
             }
-            for o in world.blocks.iter(){
+            for o in world.blocks.iter_mut(){
                 if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
                     f.dir.up = 0;
                     f.dir.down= 0;
                     f.dir.right= 0;
                     f.dir.left= 0;
+                    fire_to_block(o);
+                }
+            }
+            for o in world.item.iter_mut(){
+                if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
+                    fire_to_item(o);
                 }
             }
         }
@@ -96,6 +109,19 @@ pub fn player_to_block(player: &mut Player, block: &Block, dt: f64, actions: &Ha
 }
 pub fn player_to_fire(player: &mut Player){
     player.die();
+}
+pub fn player_to_item(player: &mut Player, item: &mut Item){
+    player.get_item(item);
+    item.remove();
+}
+pub fn fire_to_block(block: &mut Block) {
+    block.broken();
+}
+pub fn fire_to_wall(fire: &mut Fire) {
+    fire.roll_back();
+}
+pub fn fire_to_item(item: &mut Item){
+    // item.remove();
 }
 
 #[wasm_bindgen]

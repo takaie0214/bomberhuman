@@ -1,50 +1,44 @@
-use crate::geometry::Point;
+use crate::geometry::{Point, Position};
 use crate::controller::Event;
 use std::collections::VecDeque;
 
-pub struct Block {
-    pub point: Point,
+pub struct Item {
     pub id: i32,
     pub radius: i32,
     pub alive: bool,
+    pub point: Point,
+    pub ability: i32,//enum
 }
 
-impl Block{
-    pub fn new(id: i32,point: Point) -> Self {
-        Block {
-            point: point,
+impl Item {
+    pub fn new(id: i32, point: Point) -> Self {
+        Item{
             id: id,
             radius: 24,
+            point: point,
             alive: true,
+            ability: 0,//enum
         }
     }
-
-    pub fn update(&self,event: &mut VecDeque<Event>) {
-        //new Item
+    pub fn update(&mut self, event: &mut VecDeque<Event>) {
         let id = self.id;
-        let point = self.point;
         if !self.alive {
             event.push_back(Event::Disappearance{id});
-            let id = self.id + 200;
-            event.push_back(Event::GenItem{id,point})
         }
-        // let tmp: &str = &id.to_string();
-        // log(tmp);
     }
-
-    pub fn broken(&mut self) {
+    pub fn remove(&mut self){
         self.alive = false;
     }
-
     pub fn draw(&self){
-        draw_block(self.point.x, self.point.y);
+        draw_item(self.point.x, self.point.y);
     }
 }
+
 
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
-    pub fn draw_block(x: i32, y: i32);
+    pub fn draw_item(x: i32, y: i32);
 }
 
 #[wasm_bindgen]

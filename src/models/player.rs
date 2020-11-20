@@ -1,16 +1,18 @@
 use crate::geometry::{Point, Position};
 use crate::controller::{Controller, Event};
-use crate::models::{Bomb, Wall, Block, Fire};
+use crate::models::{Bomb, Wall, Block, Fire, Item};
 use std::collections::HashMap;
+use std::collections::VecDeque;
 
 /// The `Player` is the rocket controlled by the user
 //#[derive(Default)]
 pub struct Player {
-    id: i32,
+    pub id: i32,
     alive: bool,
     on_bomb: [bool; 5],//Vecが望まし
     bomb_count: i32,
     point: Point,
+    old_point: Point,
     dir : String,
     idle: bool,
     walk_count: i32,
@@ -34,6 +36,7 @@ impl Player {
             on_bomb: on_bomb,
             bomb_count: 0,
             point: point,
+            old_point: point,
             dir : String::from("down"),
             prev_dir: String::from("down"),
             idle: true,
@@ -44,24 +47,25 @@ impl Player {
 
         }
     }
-    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut Vec<Event>){
+    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>, event: &mut VecDeque<Event>){
         let mut x = 0;
         let mut y = 0;
-
+        self.old_point.x = self.point.x;
+        self.old_point.y = self.point.y;
 
         if actions.get(&self.controller.up) == Some(&true) {
             y -= (dt * self.speed) as i32;
         }
 
-        if actions.get(&self.controller.down) == Some(&true) {
+        else if actions.get(&self.controller.down) == Some(&true) {
             y += (dt * self.speed) as i32;
         }
 
-        if actions.get(&self.controller.right) == Some(&true) {
+        else if actions.get(&self.controller.right) == Some(&true) {
             x += (dt * self.speed) as i32;
         }
 
-        if actions.get(&self.controller.left) == Some(&true) {
+        else if actions.get(&self.controller.left) == Some(&true) {
             x -= (dt * self.speed) as i32;
         }
         self.point.y += y;
@@ -98,14 +102,18 @@ impl Player {
         let y = self.point.y  /50*50 + 25;
         let id = 200+self.id%10*10+self.bomb_count;
 
-            event.push(Event::SetBomb{id,x,y});
+            event.push_back(Event::SetBomb{id,x,y});
             self.bomb_count += 1;
             self.bomb_count %= 5;
         }
 
+        if !self.alive {
+            let id = self.id;
+            event.push_back(Event::Disappearance{id});
+        }
+
     }
     pub fn draw(&mut self){
-
         let mut y = 0;
         let mut x = 0;
 
@@ -125,8 +133,8 @@ impl Player {
         if self.walk_count > 2400  {x=1; self.walk_count=-9;}
 
         let id = "player".to_string() + &(self.id-100).to_string();
-        draw_player_animation(&id, x, y, self.point.x, self.point.y); 
-//        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking); 
+        draw_player_animation(&id, x, y, self.point.x, self.point.y);
+//        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking);
     }
 
     pub fn collide_with_bomb(&mut self,obj: &Bomb) -> i32 {
@@ -193,6 +201,21 @@ impl Player {
         //     return 0;
         // }
     }
+    pub fn collide_with_item(&self,obj: &Item) -> i32 {
+        let radii = self.radius + obj.radius;
+        if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
+            return self.id / 100 * 10 + obj.id / 100;
+        }
+        else {
+            return 0;
+        }
+        // if (self.point.squared_distance_to(&obj.point) < radii * radii){
+        //     return (self.id / 100 * 10 + obj.id / 100); //playerid 10X, bombid 20X, wallid 30X
+        // }
+        // else {
+        //     return 0;
+        // }
+    }
     pub fn collide_with_fire(&self,obj: &Fire) -> i32 {
         let radii = self.radius + obj.radius;
         if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
@@ -212,34 +235,47 @@ impl Player {
         self.alive = false;
     }
 
+    pub fn get_item(&mut self, item: &Item) {
+        self.speed += 80.0;
+        // match item.type {
+        // _ => (),
+        // }
+    }
+
 
     pub fn relocate(&mut self, dt: f64, actions: &HashMap<String, bool>, obj_point: &Point) {
-        if actions.get(&self.controller.up) == Some(&true) {
-            self.point.y += (dt * self.speed) as i32;
-        }
+        self.point.x = self.old_point.x;
+        self.point.y = self.old_point.y;
+        // if actions.get(&self.controller.up) == Some(&true) {
+        //     self.point.y += (dt * self.speed) as i32;
+        // }
 
-        if actions.get(&self.controller.down) == Some(&true) {
-            self.point.y -= (dt * self.speed) as i32;
-        }
+        // else if actions.get(&self.controller.down) == Some(&true) {
+        //     self.point.y -= (dt * self.speed) as i32;
+        // }
 
-        if actions.get(&self.controller.right) == Some(&true) {
-            self.point.x -= (dt * self.speed) as i32;
-        }
+        // else if actions.get(&self.controller.right) == Some(&true) {
+        //     self.point.x -= (dt * self.speed) as i32;
+        // }
 
-        if actions.get(&self.controller.left) == Some(&true) {
-            self.point.x += (dt * self.speed) as i32;
-        }
+        // else if actions.get(&self.controller.left) == Some(&true) {
+        //     self.point.x += (dt * self.speed) as i32;
+        // }
         if (self.point.x - obj_point.x > self.radius) & ((actions.get(&self.controller.up) == Some(&true)) | (actions.get(&self.controller.down) == Some(&true))){
-            self.point.x += (dt * self.speed) as i32;
+            // self.point.x += (dt * self.speed) as i32;
+            self.point.x = self.point.x / 50 * 50 + 25;
         }
-        if (obj_point.x - self.point.x > self.radius) & ((actions.get(&self.controller.up) == Some(&true)) | (actions.get(&self.controller.down) == Some(&true))){
-            self.point.x -= (dt * self.speed) as i32;
+        else if (obj_point.x - self.point.x > self.radius) & ((actions.get(&self.controller.up) == Some(&true)) | (actions.get(&self.controller.down) == Some(&true))){
+            // self.point.x -= (dt * self.speed) as i32;
+            self.point.x = self.point.x / 50 * 50 - 25;
         }
-        if (self.point.y - obj_point.y > self.radius) & ((actions.get(&self.controller.left) == Some(&true)) | (actions.get(&self.controller.right) == Some(&true))){
-            self.point.y += (dt * self.speed) as i32;
+        else if (self.point.y - obj_point.y > self.radius) & ((actions.get(&self.controller.left) == Some(&true)) | (actions.get(&self.controller.right) == Some(&true))){
+            // self.point.y += (dt * self.speed) as i32;
+            self.point.y = self.point.y /50 * 50 + 25;
         }
-        if (obj_point.y - self.point.y > self.radius) & ((actions.get(&self.controller.left) == Some(&true))| (actions.get(&self.controller.right) == Some(&true))){
-            self.point.y -= (dt * self.speed) as i32;
+        else if (obj_point.y - self.point.y > self.radius) & ((actions.get(&self.controller.left) == Some(&true))| (actions.get(&self.controller.right) == Some(&true))){
+            // self.point.y -= (dt * self.speed) as i32;
+            self.point.y = self.point.y /50 * 50 - 25;
         }
     }
 }

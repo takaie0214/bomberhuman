@@ -1,33 +1,39 @@
 use crate::geometry::{Point, Position, Dir};
 
+use std::collections::VecDeque;
 use crate::controller::Event;
 
 pub struct Fire {
     pub id: i32,
+    pub bid: i32,
     pub radius: i32,
     pub point: Point,
     pub ttl: f64,
     pub dir: Dir,
+    pub on_wall: bool,
 }
 
 impl Fire {
-    pub fn new(id: i32, x: i32, y: i32, dir: Dir) -> Self {
+    pub fn new(id: i32, bid: i32, x: i32, y: i32, dir: Dir) -> Self {
         Fire {
             radius: 24,
             id: id,
+            bid: bid,
             point: Point::new(x,y),
             ttl: 1.6,
             dir: dir,
+            on_wall: false,
         }
     }
-    pub fn update(&mut self, dt: f64, event: &mut  Vec<Event>) {
+    pub fn update(&mut self, dt: f64, event: &mut  VecDeque<Event>) {
         let id = self.id;
+        let bid = self.bid;
         if self.dir.up > 0 {
             let x = self.x();
             let y = self.y() - 50;
             let dir = self.dir.up - 1;
             let new_dir = Dir::new(dir, 0, 0, 0);
-            event.push(Event::Explosion{id: id, x: x, y: y, dir:new_dir});
+            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.up = 0;
         }
         if self.dir.down > 0 {
@@ -35,7 +41,7 @@ impl Fire {
             let  y = self.y() + 50;
             let dir = self.dir.down - 1;
             let new_dir = Dir::new(0, dir, 0, 0);
-            event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
+            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.down= 0;
         }
         if self.dir.right > 0 {
@@ -43,7 +49,7 @@ impl Fire {
             let y = self.y();
             let dir = self.dir.right - 1;
             let new_dir = Dir::new( 0, 0, dir, 0);
-            event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
+            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.right = 0;
         }
         if self.dir.left > 0 {
@@ -51,14 +57,17 @@ impl Fire {
             let y = self.y();
             let dir = self.dir.left- 1;
             let new_dir = Dir::new(0, 0, 0, dir);
-            event.push(Event::Explosion{id: id, x: x, y:y, dir:new_dir});
+            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.left = 0;
         }
 
         self.ttl -= dt;
         if self.ttl < 0.0 {
-            event.push(Event::Disappearance{id});
+            event.push_back(Event::Disappearance{id});
         }
+    }
+    pub fn roll_back(&mut self){
+        self.on_wall = true;
     }
     pub fn draw(&self){
         let mut x = 0;
