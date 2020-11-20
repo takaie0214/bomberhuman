@@ -1,41 +1,27 @@
 use crate::models::{World, Player, Bomb, Wall, Block, Fire, Item};
-use std::collections::HashMap;
+use crate::controller::Controller;
 
 use wasm_bindgen::prelude::*;
 
 pub struct Collision {
-    // players: Vec<Player>,
-    // bomb: Vec<Bomb>,
-    // walls: Vec<Wall>
-
 }
 
 impl Collision {
-    // pub fn new(world: World) -> Self {
-    //     Collision{
-    //         players = world.players,
-    //         bomb = world.bomb,
-    //         walls = world.walls
-    //     }
-    // }
-
-    pub fn collision_with (dt: f64, actions: &HashMap<String, bool>, world: &mut World) {
+    pub fn collision_with (dt: f64, controllers: &Vec<Controller>, world: &mut World) {
         for p in world.players.iter_mut(){
             for b in world.bomb.iter(){//all_objs.iter
                 match p.collide_with_bomb(b){
-                    0 => (),
                     // 11 => self.player_to_player(p,b),
-                    12 => player_to_bomb(p,b,dt,actions),
-                    // 13 => self.player_to_wall(p,b,dt,actions)
+                    12 => player_to_bomb(p,b,dt, &controllers[(p.id - 101) as usize]),
+                    // 13 => self.player_to_wall(p,b,dt,controllers[p.id - 100])
                     _ => (),
                 }
             }
             for w in world.walls.iter(){//all_objs.iter
                 match p.collide_with_wall(w){
-                    0 => (),
                     // 11 => self.player_to_player(p,b),
-                    // 12 => player_to_bomb(p,b,dt,actions),
-                    13 => player_to_wall(p,w,dt,actions),
+                    // 12 => player_to_bomb(p,b,dt,controllers[p.id - 100]),
+                    13 => player_to_wall(p,w,dt,&controllers[(p.id - 101) as usize]),
                     _ => (),
                 }
             }
@@ -43,8 +29,8 @@ impl Collision {
                 match p.collide_with_block(w){
                     0 => (),
                     // 11 => self.player_to_player(p,b),
-                    // 12 => player_to_bomb(p,b,dt,actions),
-                    14 => player_to_block(p,w,dt,actions),
+                    // 12 => player_to_bomb(p,b,dt,controllers[p.id - 100]),
+                    14 => player_to_block(p,w,dt,&controllers[(p.id - 101) as usize]),
                     _ => (),
                 }
             }
@@ -98,14 +84,14 @@ impl Collision {
     // pub fn player_to_player(player1: Player, player2: Player){
     // }
 }
-pub fn player_to_bomb(player: &mut Player, bomb: &Bomb, dt: f64, actions: &HashMap<String, bool>){
-    player.relocate(dt,actions,&bomb.point);
+pub fn player_to_bomb(player: &mut Player, bomb: &Bomb, dt: f64, controller: &Controller){
+    player.relocate(dt,&controller,&bomb.point);
 }
-pub fn player_to_wall(player: &mut Player, wall: &Wall, dt: f64, actions: &HashMap<String, bool>){
-    player.relocate(dt,actions,&wall.point);
+pub fn player_to_wall(player: &mut Player, wall: &Wall, dt: f64, controller: &Controller){
+    player.relocate(dt,&controller,&wall.point);
 }
-pub fn player_to_block(player: &mut Player, block: &Block, dt: f64, actions: &HashMap<String, bool>){
-    player.relocate(dt,actions,&block.point);
+pub fn player_to_block(player: &mut Player, block: &Block, dt: f64, controller: &Controller){
+    player.relocate(dt,&controller,&block.point);
 }
 pub fn player_to_fire(player: &mut Player){
     player.die();

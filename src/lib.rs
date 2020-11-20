@@ -13,16 +13,14 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 use self::geometry::Size;
 use self::models::World;
-use self::controller::Collision;
-use std::collections::HashMap;
+use self::controller::{Controller, Collision};
 
 use std::os::raw::c_int;
 
 #[wasm_bindgen] struct GameState {
     // The world contains everything that needs to be drawn
     world: World,
-    actions: HashMap<String, bool>,
-    // collision: Collision
+    controllers: Vec<Controller>,
 }
 
 #[wasm_bindgen]
@@ -31,13 +29,12 @@ impl GameState {
     pub fn new(width: i32, height: i32) -> GameState {
         GameState {
             world: World::new(Size::new(width, height)),
-            actions: HashMap::new(),
-            // collision: Collision::new()
+            controllers: vec![Controller::new();4],
         }
     }
     pub fn update(&mut self, dt: f64){
-        self.world.update(dt, &self.actions);
-        Collision::collision_with(dt,&self.actions,&mut self.world);
+        self.world.update(dt, &self.controllers);
+        Collision::collision_with(dt, &self.controllers, &mut self.world);
     }
     pub fn draw(&mut self){
         clear_screen();
@@ -45,28 +42,37 @@ impl GameState {
     }
 
     pub fn processkey(&mut self, key: &str, b: c_int) {
+        let state = int_to_bool(b);
         match key {
-            "ArrowUp"    => self.actions.insert(String::from("up1"), int_to_bool(b)),
-            "ArrowDown"  => self.actions.insert(String::from("down1"), int_to_bool(b)),
-            "ArrowRight" => self.actions.insert(String::from("right1"), int_to_bool(b)),
-            "ArrowLeft"  => self.actions.insert(String::from("left1"), int_to_bool(b)),
-            " "          => self.actions.insert(String::from("a1"), int_to_bool(b)),
-            "w"          => self.actions.insert(String::from("up2"), int_to_bool(b)),
-            "s"          => self.actions.insert(String::from("down2"), int_to_bool(b)),
-            "d"          => self.actions.insert(String::from("right2"), int_to_bool(b)),
-            "a"          => self.actions.insert(String::from("left2"), int_to_bool(b)),
-            "m"          => self.actions.insert(String::from("a2"), int_to_bool(b)),
-            "1"          => self.actions.insert(String::from("up3"), int_to_bool(b)),
-            "2"          => self.actions.insert(String::from("down3"), int_to_bool(b)),
-            "3"          => self.actions.insert(String::from("right3"), int_to_bool(b)),
-            "4"          => self.actions.insert(String::from("left3"), int_to_bool(b)),
-            "5"          => self.actions.insert(String::from("a4"), int_to_bool(b)),
-            "6"          => self.actions.insert(String::from("up4"), int_to_bool(b)),
-            "7"          => self.actions.insert(String::from("down4"), int_to_bool(b)),
-            "8"          => self.actions.insert(String::from("right4"), int_to_bool(b)),
-            "9"          => self.actions.insert(String::from("left4"), int_to_bool(b)),
-            "0"          => self.actions.insert(String::from("a4"), int_to_bool(b)),
-                       _ => None,
+            //keymap for Player1
+            "ArrowUp"    => self.controllers[0].up       = state,
+            "ArrowDown"  => self.controllers[0].down     = state,
+            "ArrowRight" => self.controllers[0].right    = state,
+            "ArrowLeft"  => self.controllers[0].left     = state,
+            " "          => self.controllers[0].button1  = state,
+
+            //keymap for Player2
+            "w"          => self.controllers[1].up       = state,
+            "s"          => self.controllers[1].down     = state,
+            "d"          => self.controllers[1].right    = state,
+            "a"          => self.controllers[1].left     = state,
+            "m"          => self.controllers[1].button1  = state,
+
+            //keymap for Player3
+            "1"          => self.controllers[2].up       = state,
+            "2"          => self.controllers[2].down     = state,
+            "3"          => self.controllers[2].right    = state,
+            "4"          => self.controllers[2].left     = state,
+            "5"          => self.controllers[2].button1  = state,
+
+            //keymap for Player4
+            "6"          => self.controllers[3].up       = state,
+            "7"          => self.controllers[3].down     = state,
+            "8"          => self.controllers[3].right    = state,
+            "9"          => self.controllers[3].left     = state,
+            "0"          => self.controllers[3].button1  = state,
+
+            _            => (),
         };
     }
 }

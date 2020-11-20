@@ -25,23 +25,19 @@ impl World {
 
         let id1 = 101;
         let point1 = Point::new(75, 75);
-        let controller1 = Controller::new("up1","down1","right1","left1", "a1");
-        players.push(Player::new(id1, point1, controller1));
+        players.push(Player::new(id1, point1));
 
         let id2 = 102;
         let point2 = Point::new(675, 575);
-        let controller2 = Controller::new("up2","down2","right2","left2", "a2");
-        players.push(Player::new(id2, point2, controller2));
+        players.push(Player::new(id2, point2));
 
         let id3 = 103;
         let point3 = Point::new(675, 75);
-        let controller3 = Controller::new("up3","down3","right3","left3", "a3");
-        players.push(Player::new(id3, point3, controller3));
+        players.push(Player::new(id3, point3));
 
         let id4 = 104;
         let point4 = Point::new(75, 575);
-        let controller4 = Controller::new("up4","down4","right4","left4", "a4");
-        players.push(Player::new(id4, point4, controller4));
+        players.push(Player::new(id4, point4));
 
         let wall_bmp = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -107,9 +103,9 @@ impl World {
         }
     }
 
-    pub fn update(&mut self, dt: f64, actions: &HashMap<String, bool>) {
+    pub fn update(&mut self, dt: f64, controllers: &Vec<Controller>) {
         for p in &mut self.players {
-            p.update(dt, actions, &mut self.event);
+            p.update(dt, &controllers[(p.id - 101) as usize], &mut self.event);
         }
         for b in &mut self.bomb {
             b.update(dt,  &mut self.event);
@@ -205,4 +201,8 @@ use wasm_bindgen::prelude::*;
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: &str);
+}
+#[wasm_bindgen]
+extern {
+    pub fn alert(s: &str);
 }

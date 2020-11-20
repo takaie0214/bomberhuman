@@ -1,20 +1,20 @@
 /// Active actions (toggled by user input)
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Controller{
-    pub up: String,
-    pub down: String,
-    pub right: String,
-    pub left: String,
-    pub button1: String,
+    pub up: bool,
+    pub down: bool,
+    pub right: bool,
+    pub left: bool,
+    pub button1: bool,
 }
 impl Controller {
-    pub fn new(up: &str, down: &str, right: &str, left: &str, button1: &str) -> Self {
+    pub fn new() -> Self {
         Controller {
-            up: up.to_string(),
-            down: down.to_string(),
-            right: right.to_string(),
-            left: left.to_string(),
-            button1: button1.to_string(),
+            up: false,
+            down: false,
+            right: false,
+            left: false,
+            button1: false,
         }
     }
 }
