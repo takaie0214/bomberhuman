@@ -33,7 +33,7 @@ impl Fire {
             let y = self.y() - 50;
             let dir = self.dir.up - 1;
             let new_dir = Dir::new(dir, 0, 0, 0);
-            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
+            event.push_back(Event::FireSpread{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.up = 0;
         }
         if self.dir.down > 0 {
@@ -41,7 +41,7 @@ impl Fire {
             let  y = self.y() + 50;
             let dir = self.dir.down - 1;
             let new_dir = Dir::new(0, dir, 0, 0);
-            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
+            event.push_back(Event::FireSpread{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.down= 0;
         }
         if self.dir.right > 0 {
@@ -49,7 +49,7 @@ impl Fire {
             let y = self.y();
             let dir = self.dir.right - 1;
             let new_dir = Dir::new( 0, 0, dir, 0);
-            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
+            event.push_back(Event::FireSpread{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.right = 0;
         }
         if self.dir.left > 0 {
@@ -57,7 +57,7 @@ impl Fire {
             let y = self.y();
             let dir = self.dir.left- 1;
             let new_dir = Dir::new(0, 0, 0, dir);
-            event.push_back(Event::Explosion{fid: id, bid: bid, x: x, y: y, dir:new_dir});
+            event.push_back(Event::FireSpread{fid: id, bid: bid, x: x, y: y, dir:new_dir});
             self.dir.left = 0;
         }
 

@@ -9,7 +9,7 @@ pub struct Player {
     pub id: i32,
     alive: bool,
     on_bomb: [bool; 5],//Vecが望まし
-    bomb_count: i32,
+    pub bomb_count: i32,
     point: Point,
     old_point: Point,
     dir : String,
@@ -17,6 +17,8 @@ pub struct Player {
     walk_count: i32,
     prev_dir: String,
     speed: f64,
+    pub firepower: i32,
+    pub bomb_quantity: i32,
     radius: i32,
 }
 
@@ -24,6 +26,8 @@ impl Player {
     /// Create a new `Player` with a random position and direction
     pub fn new(id: i32, point: Point) -> Self {
         let speed: f64 = 80.0;
+        let firepower: i32 = 1;
+        let bomb_quantity: i32 = 1;
         let radius: i32 = 24;
         let on_bomb: [bool; 5] = [false,false,false,false,false];
 
@@ -39,6 +43,8 @@ impl Player {
             idle: true,
             walk_count: 0,
             speed: speed,
+            firepower: firepower,
+            bomb_quantity: bomb_quantity,
             radius: radius,
         }
     }
@@ -88,7 +94,7 @@ impl Player {
             self.prev_dir =  String::from(&self.dir.clone());
         }
 
-        if controller.button1 {
+        if controller.button1 && self.bomb_quantity > self.bomb_count {
             self.on_bomb[(self.bomb_count) as usize]=true;
 
          //   let new_bomb = Bomb::new(200+self.id%10*10+self.bomb_count,((self.point.x) as i32 / 50*50 + 25)as f64,((self.point.y) as i32 /50*50 + 25) as f64);
@@ -229,10 +235,12 @@ impl Player {
     }
 
     pub fn get_item(&mut self, item: &Item) {
-        self.speed += 80.0;
-        // match item.type {
-        // _ => (),
-        // }
+        match item.ability {
+        0 => {self.speed += 40.0;},
+        1 => {self.firepower += 1},
+        2 => {self.bomb_quantity += 1},
+        _ => (),
+        }
     }
 
 
@@ -246,7 +254,7 @@ impl Player {
         }
         else if (obj_point.x - self.point.x > self.radius) & controller.up | controller.down {
             // self.point.x -= (dt * self.speed) as i32;
-            self.point.x = self.point.x / 50 * 50 - 25;
+            self.point.x = self.point.x / 50 * 50 + 25;
         }
         else if (self.point.y - obj_point.y > self.radius) & controller.left | controller.right {
             // self.point.y += (dt * self.speed) as i32;
@@ -254,7 +262,7 @@ impl Player {
         }
         else if (obj_point.y - self.point.y > self.radius) & controller.left | controller.right {
             // self.point.y -= (dt * self.speed) as i32;
-            self.point.y = self.point.y /50 * 50 - 25;
+            self.point.y = self.point.y /50 * 50 + 25;
         }
     }
 }

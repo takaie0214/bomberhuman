@@ -138,12 +138,16 @@ impl World {
                         Event::Explosion{fid, bid, x, y, dir} => {
                             self.bomb.retain(|elem| elem.id != bid);//idはfireid,bombidが必要
                             self.fire.push(Fire::new(fid, bid, x, y, dir));
+                            self.players[(bid%100/10 - 1) as usize].bomb_count -= 1;
                             // let tmp: &str = &id.to_string();
                             // let tmp2: &str = &self.bomb[0].id.to_string();
                             // log(tmp);
                             // log(tmp2);
                             // let size: &str = &self.fire.len().to_string();
                             // log(size);
+                        }
+                        Event::FireSpread{fid, bid, x, y, dir} => {
+                            self.fire.push(Fire::new(fid, bid, x, y, dir));
                         }
                         Event::Disappearance{id} => {
                             // self.fire.iter().map(|elem| {let tmp: &str = &elem.id.to_string();log(tmp);});
