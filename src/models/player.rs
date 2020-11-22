@@ -17,6 +17,7 @@ pub struct Player {
     walk_count: i32,
     prev_dir: String,
     speed: f64,
+    bomb_ct: f64,
     pub firepower: i32,
     pub bomb_quantity: i32,
     radius: i32,
@@ -43,6 +44,7 @@ impl Player {
             idle: true,
             walk_count: 0,
             speed: speed,
+            bomb_ct: 0.0,
             firepower: firepower,
             bomb_quantity: bomb_quantity,
             radius: radius,
@@ -94,15 +96,18 @@ impl Player {
             self.prev_dir =  String::from(&self.dir.clone());
         }
 
-        if controller.button1 && self.bomb_quantity > self.bomb_count {
+        self.bomb_ct -= dt;
+        if controller.button1 && self.bomb_quantity > self.bomb_count && self.bomb_ct < 0.0{
             self.on_bomb[(self.bomb_count) as usize]=true;
 
          //   let new_bomb = Bomb::new(200+self.id%10*10+self.bomb_count,((self.point.x) as i32 / 50*50 + 25)as f64,((self.point.y) as i32 /50*50 + 25) as f64);
             let x = self.point.x  / 50*50 + 25;
             let y = self.point.y  /50*50 + 25;
             let id = 200+self.id%10*10+self.bomb_count;
+            let firepower = self.firepower;
 
-            event.push_back(Event::SetBomb{id,x,y});
+            event.push_back(Event::SetBomb{id,x,y,firepower});
+            self.bomb_ct = 1.0;
             self.bomb_count += 1;
             self.bomb_count %= 5;
         }

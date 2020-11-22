@@ -124,13 +124,13 @@ impl World {
                 None => (),
                 Some(event) =>
                     match event {
-                        Event::SetBomb{id,x,y} => {
+                        Event::SetBomb{id,x,y,firepower} => {
                             for b in &self.bomb{
                                 if b.point.x == x && b.point.y == y {
                                     return ();
                                 }
                             }
-                            self.bomb.push(Bomb::new(id,x,y));
+                            self.bomb.push(Bomb::new(id,x,y,firepower));
                         },
                         Event::GenItem{id,point} => {
                             self.item.push(Item::new(id,point))

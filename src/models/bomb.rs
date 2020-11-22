@@ -8,15 +8,17 @@ pub struct Bomb {
     pub radius: i32,
     pub ttl: f64,
     pub point: Point,
+    pub firepower: i32,
 }
 
 impl Bomb {
-    pub fn new(id: i32, x: i32, y: i32) -> Self {
+    pub fn new(id: i32, x: i32, y: i32, firepower: i32) -> Self {
         Bomb{
             id: id,
             radius: 24,
             point: Point::new(x,y),
             ttl: 5.0,
+            firepower: firepower,
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  VecDeque<Event>) {
@@ -26,7 +28,8 @@ impl Bomb {
             let fid = self.id - 200 + 500;
             let x =  self.x();
             let y =  self.y();
-            let dir = Dir::new(3, 3, 3, 3);
+            let firepower = self.firepower;
+            let dir = Dir::new(firepower, firepower, firepower, firepower);
             event.push_back(Event::Explosion{fid, bid, x, y, dir});
         }
     }
