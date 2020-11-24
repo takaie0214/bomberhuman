@@ -22,9 +22,9 @@ let image_list = [
     {id:"wall"   , src: "image/wall.png",       reg: {x: 602, y: 602}},
     {id:"block"  , src: "image/sblock.png",     reg: {x: 317, y: 317}},
     {id:"fire"   , src: "image/fire.png",       reg: {x:177, y:177}},
-    {id:"item_fire"   , src: "image/item_fire.png",       reg: {x:277,y:277}},
-    {id:"item_bomb"   , src: "image/item_bomb.png",       reg: {x:277,y:277}},
-    {id:"item_boots"   , src: "image/item_boots.png",       reg: {x:277,y:277}},
+    {id:"item_fire"   , src: "image/item_fire.png",       reg: {x:800,y:800}},
+    {id:"item_bomb"   , src: "image/item_bomb.png",       reg: {x:800,y:800}},
+    {id:"item_boots"   , src: "image/item_boots.png",       reg: {x:400,y:400}},
 
 ];
 

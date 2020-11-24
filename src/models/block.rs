@@ -1,6 +1,7 @@
 use crate::geometry::Point;
 use crate::controller::Event;
 use std::collections::VecDeque;
+use rand::Rng;
 
 pub struct Block {
     pub point: Point,
@@ -23,10 +24,14 @@ impl Block{
         //new Item
         let id = self.id;
         let point = self.point;
+        let mut rng = rand::thread_rng();
+        let rn: i32 = rng.gen();
         if !self.alive {
             event.push_back(Event::Disappearance{id});
             let id = self.id + 200;
-            event.push_back(Event::GenItem{id,point})
+            if rn%2 == 0 {
+                event.push_back(Event::GenItem{id,point})
+            }
         }
         // let tmp: &str = &id.to_string();
         // log(tmp);

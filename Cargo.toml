@@ -11,7 +11,7 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 wasm-bindgen = "0.2.63"
-rand = {version = "0.6.1", features = ["wasm-bindgen"]}
+rand = {version = "0.7.1", features = ["wasm-bindgen"]}
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
@@ -41,6 +41,3 @@ features = [
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-
-[patch.crates-io]
-rand = { git = "https://github.com/aochagavia/rand.git", branch = "wasm" }

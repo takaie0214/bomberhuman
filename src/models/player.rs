@@ -103,12 +103,13 @@ impl Player {
             let x = self.point.x  / 50*50 + 25;
             let y = self.point.y  /50*50 + 25;
             let id = 200+self.id%10*10+self.bomb_count;
+            let tmp: &str = &id.to_string();
+            log(tmp);
             let firepower = self.firepower;
 
             event.push_back(Event::SetBomb{id,x,y,firepower});
-            self.bomb_ct = 1.0;
+            self.bomb_ct = 0.5;
             self.bomb_count += 1;
-            self.bomb_count %= 5;
         }
 
         // if !self.alive {
@@ -241,9 +242,9 @@ impl Player {
 
     pub fn get_item(&mut self, item: &Item) {
         match item.ability {
-        0 => {self.speed += 40.0;},
-        1 => {self.firepower += 1},
-        2 => {self.bomb_quantity += 1},
+        0 => {self.speed += if self.speed == 400.0 {0.0} else {40.0};},
+        1 => {self.firepower += if self.firepower == 5 {0} else {1};},
+        2 => {self.bomb_quantity += if self.bomb_quantity == 5 {0} else {1};},
         _ => (),
         }
     }
