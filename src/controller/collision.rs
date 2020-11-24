@@ -9,7 +9,7 @@ pub struct Collision {
 impl Collision {
     pub fn collision_with (dt: f64, controllers: &Vec<Controller>, world: &mut World) {
         for p in world.players.iter_mut(){
-            for b in world.bomb.iter(){//all_objs.iter
+            for b in world.bomb.iter_mut(){//all_objs.iter
                 match p.collide_with_bomb(b){
                     // 11 => self.player_to_player(p,b),
                     12 => player_to_bomb(p,b,dt, &controllers[(p.id - 101) as usize]),
@@ -52,6 +52,7 @@ impl Collision {
             for o in world.bomb.iter_mut(){
                 if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
                     o.ttl = 0.0;
+                    // o.detonate(f);
                 }
             }
             for o in world.walls.iter(){

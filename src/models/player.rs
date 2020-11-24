@@ -8,9 +8,8 @@ use std::collections::VecDeque;
 pub struct Player {
     pub id: i32,
     alive: bool,
-    on_bomb: [bool; 5],//Vecが望まし
     pub bomb_count: i32,
-    point: Point,
+    pub point: Point,
     old_point: Point,
     dir : String,
     idle: bool,
@@ -20,7 +19,7 @@ pub struct Player {
     bomb_ct: f64,
     pub firepower: i32,
     pub bomb_quantity: i32,
-    radius: i32,
+    pub radius: i32,
 }
 
 impl Player {
@@ -30,12 +29,10 @@ impl Player {
         let firepower: i32 = 1;
         let bomb_quantity: i32 = 1;
         let radius: i32 = 24;
-        let on_bomb: [bool; 5] = [false,false,false,false,false];
 
         Player {
             id: id,
             alive: true,
-            on_bomb: on_bomb,
             bomb_count: 0,
             point: point,
             old_point: point,
@@ -51,6 +48,9 @@ impl Player {
         }
     }
     pub fn update(&mut self, dt: f64, controller: &Controller , event: &mut VecDeque<Event>){
+        if !self.alive {
+            return ;
+        }
         let mut x = 0;
         let mut y = 0;
         self.old_point.x = self.point.x;
@@ -98,7 +98,6 @@ impl Player {
 
         self.bomb_ct -= dt;
         if controller.button1 && self.bomb_quantity > self.bomb_count && self.bomb_ct < 0.0{
-            self.on_bomb[(self.bomb_count) as usize]=true;
 
          //   let new_bomb = Bomb::new(200+self.id%10*10+self.bomb_count,((self.point.x) as i32 / 50*50 + 25)as f64,((self.point.y) as i32 /50*50 + 25) as f64);
             let x = self.point.x  / 50*50 + 25;
@@ -112,12 +111,15 @@ impl Player {
             self.bomb_count %= 5;
         }
 
-        if !self.alive {
-            let id = self.id;
-            event.push_back(Event::Disappearance{id});
-        }
+        // if !self.alive {
+        //     let id = self.id;
+        //     event.push_back(Event::Disappearance{id});
+        // }
     }
     pub fn draw(&mut self){
+        if !self.alive {
+            return;
+        }
         let mut y = 0;
         let mut x = 0;
 
@@ -141,28 +143,26 @@ impl Player {
 //        self.sprite.animate(self.point.x, self.point.y, &self.dir, self.idle, self.walking);
     }
 
-    pub fn collide_with_bomb(&mut self,obj: &Bomb) -> i32 {
+    pub fn collide_with_bomb(&mut self,obj: &mut Bomb) -> i32 {
         let radii = self.radius + obj.radius;
         // if (((self.point.x - obj.point.x).abs() < 47.0) & ((self.point.y - obj.point.y).abs() < 47.0)){
         //     return 0;
         // }
         if ((self.point.x - obj.point.x).abs() < radii) & ((self.point.y - obj.point.y).abs() < radii){
-            if (self.id%10 == obj.id%100/10) & (self.on_bomb[(obj.id%10) as usize]){
+            if obj.on_player[(self.id%10 - 1) as usize] {
+                return 0;
+            }
                 // let test = self.id;
                 // let testa = obj.id;
                 // log(&test.to_string());
                 // log(&testa.to_string());
-                return 0;
-            }
             else {
                 return self.id / 100 * 10 + obj.id / 100;
 
             }
         }
         else {
-            if self.id%10 == obj.id%100/10{
-                self.on_bomb[(obj.id%10) as usize] = false;
-            }
+            obj.on_player[(self.id%10 - 1) as usize] = false;
             return 0;
         }
         // if (self.point.squared_distance_to(&obj.point) < radii * radii){
@@ -253,19 +253,19 @@ impl Player {
         self.point.x = self.old_point.x;
         self.point.y = self.old_point.y;
 
-        if (self.point.x - obj_point.x > self.radius) & controller.up | controller.down {
+        if (self.point.x - obj_point.x > self.radius) && (controller.up || controller.down) {
             // self.point.x += (dt * self.speed) as i32;
             self.point.x = self.point.x / 50 * 50 + 25;
         }
-        else if (obj_point.x - self.point.x > self.radius) & controller.up | controller.down {
+        else if (obj_point.x - self.point.x > self.radius) && (controller.up || controller.down) {
             // self.point.x -= (dt * self.speed) as i32;
             self.point.x = self.point.x / 50 * 50 + 25;
         }
-        else if (self.point.y - obj_point.y > self.radius) & controller.left | controller.right {
+        else if (self.point.y - obj_point.y > self.radius) && (controller.left || controller.right) {
             // self.point.y += (dt * self.speed) as i32;
             self.point.y = self.point.y /50 * 50 + 25;
         }
-        else if (obj_point.y - self.point.y > self.radius) & controller.left | controller.right {
+        else if (obj_point.y - self.point.y > self.radius) && (controller.left || controller.right) {
             // self.point.y -= (dt * self.speed) as i32;
             self.point.y = self.point.y /50 * 50 + 25;
         }

@@ -9,16 +9,18 @@ pub struct Bomb {
     pub ttl: f64,
     pub point: Point,
     pub firepower: i32,
+    pub on_player: Vec<bool>,
 }
 
 impl Bomb {
-    pub fn new(id: i32, x: i32, y: i32, firepower: i32) -> Self {
+    pub fn new(id: i32, x: i32, y: i32, firepower: i32, on_player: Vec<bool>) -> Self {
         Bomb{
             id: id,
             radius: 24,
             point: Point::new(x,y),
             ttl: 5.0,
             firepower: firepower,
+            on_player: on_player,
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  VecDeque<Event>) {
@@ -33,6 +35,13 @@ impl Bomb {
             event.push_back(Event::Explosion{fid, bid, x, y, dir});
         }
     }
+    // pub fn detonate(&mut self, fire: &mut Fire){
+    //     let fid = self.id - 200 + 500;
+    //     let bid = self.id;
+    //     let x = self.x();
+    //     let y = self.y();
+    //     event.push_back(Event::Explosion{fid, bif, x, y, dir});
+    // }
     pub fn draw(&self){
         let mut x = 0;
         let y = 0;

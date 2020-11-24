@@ -23,7 +23,8 @@ impl Item {
             radius: 24,
             point: point,
             alive: true,
-            ability: rng.gen_range(0,2),
+            // ability: rng.gen_range(0,2),
+            ability: 2,
         }
     }
     pub fn update(&mut self, event: &mut VecDeque<Event>) {

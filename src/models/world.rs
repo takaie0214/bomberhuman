@@ -125,12 +125,16 @@ impl World {
                 Some(event) =>
                     match event {
                         Event::SetBomb{id,x,y,firepower} => {
+                            let mut on_player: Vec<bool>= vec![];
                             for b in &self.bomb{
                                 if b.point.x == x && b.point.y == y {
                                     return ();
                                 }
                             }
-                            self.bomb.push(Bomb::new(id,x,y,firepower));
+                            for p in &self.players{
+                                on_player.push(((p.point.x - x).abs() < p.radius*2) && ((p.point.y - y).abs() < p.radius*2));
+                            }
+                            self.bomb.push(Bomb::new(id,x,y,firepower,on_player));
                         },
                         Event::GenItem{id,point} => {
                             self.item.push(Item::new(id,point))
@@ -153,7 +157,7 @@ impl World {
                             // self.fire.iter().map(|elem| {let tmp: &str = &elem.id.to_string();log(tmp);});
                             self.fire.retain(|elem| elem.id != id);
                             self.blocks.retain(|elem| elem.id != id);
-                            self.players.retain(|elem| elem.id != id);
+                            // self.players.retain(|elem| elem.id != id);
                             self.item.retain(|elem| elem.id != id);
                             // let size: &str = &self.fire.len().to_string();
                             // log(size);
