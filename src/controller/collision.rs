@@ -51,8 +51,11 @@ impl Collision {
         for f in world.fire.iter_mut(){
             for o in world.bomb.iter_mut(){
                 if (f.point.x == o.point.x) && (f.point.y == o.point.y) {
-                    o.ttl = 0.0;
-                    // o.detonate(f);
+                    o.detonate(f);
+                    f.dir.up = 0;
+                    f.dir.down= 0;
+                    f.dir.right= 0;
+                    f.dir.left= 0;
                 }
             }
             for o in world.walls.iter(){

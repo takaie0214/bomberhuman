@@ -1,9 +1,6 @@
 use crate::geometry::{Point, Size};
 use rand::Rng;
-use pcg_rand::Pcg32Basic;
-use rand::SeedableRng;
 use crate::models::{Player, Bomb, Wall,  Block, Fire, Item};
-use std::collections::HashMap;
 use std::collections::VecDeque;
 use crate::controller::{Controller, Event};
 
@@ -77,11 +74,13 @@ impl World {
         }
 
         let mut blocks = Vec::new();
-        let mut rng = Pcg32Basic::from_seed([42, 42]);
+        // let mut rng = Pcg32Basic::from_seed([42, 42]);
+        let mut rng = rand::thread_rng();
         let mut block_id = 400;
         for (index1, val1) in block_bmp.iter().enumerate(){
             for (index2,val2) in val1.iter().enumerate(){
-                if *val2 == 1 && rng.gen_range(0, 9) > 0 {
+                let rn: i32 = rng.gen();
+                if *val2 == 1 && (rn%10) < 9 {
                     blocks.push(Block::new(block_id,Point::new(50 * index2 as i32 + 25, 50 * index1 as i32 + 25)));
                     block_id += 1;
                 }

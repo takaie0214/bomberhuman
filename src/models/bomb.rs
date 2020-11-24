@@ -1,5 +1,5 @@
 use crate::geometry::{Point, Position, Dir};
-
+use crate::models::Fire;
 use crate::controller::Event;
 use std::collections::VecDeque;
 
@@ -10,6 +10,7 @@ pub struct Bomb {
     pub point: Point,
     pub firepower: i32,
     pub on_player: Vec<bool>,
+    pub dir: Dir,
 }
 
 impl Bomb {
@@ -18,9 +19,10 @@ impl Bomb {
             id: id,
             radius: 24,
             point: Point::new(x,y),
-            ttl: 5.0,
             firepower: firepower,
+            ttl: 5.0,
             on_player: on_player,
+            dir: Dir::new(firepower, firepower, firepower, firepower),
         }
     }
     pub fn update(&mut self, dt: f64, event: &mut  VecDeque<Event>) {
@@ -30,18 +32,18 @@ impl Bomb {
             let fid = self.id - 200 + 500;
             let x =  self.x();
             let y =  self.y();
-            let firepower = self.firepower;
-            let dir = Dir::new(firepower, firepower, firepower, firepower);
+            let dir = self.dir;
             event.push_back(Event::Explosion{fid, bid, x, y, dir});
         }
     }
-    // pub fn detonate(&mut self, fire: &mut Fire){
-    //     let fid = self.id - 200 + 500;
-    //     let bid = self.id;
-    //     let x = self.x();
-    //     let y = self.y();
-    //     event.push_back(Event::Explosion{fid, bif, x, y, dir});
-    // }
+    pub fn detonate(&mut self, fire: &mut Fire){
+        let down = if fire.dir.up == 0 {self.firepower} else {0};
+        let up = if fire.dir.down == 0 {self.firepower} else {0};
+        let left = if fire.dir.right == 0 {self.firepower} else {0};
+        let right = if fire.dir.left == 0 {self.firepower} else {0};
+        self.dir = Dir::new(up,down,right,left);
+        self.ttl = 0.0;
+    }
     pub fn draw(&self){
         let mut x = 0;
         let y = 0;

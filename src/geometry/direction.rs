@@ -1,3 +1,4 @@
+#[derive(Copy,Clone)]
 pub struct Dir {
     pub up: i32,
     pub down: i32,

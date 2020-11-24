@@ -1,10 +1,8 @@
 extern crate rand;
-use crate::geometry::{Point, Position};
+use crate::geometry::Point;
 use crate::controller::Event;
 use std::collections::VecDeque;
 use rand::Rng;
-use pcg_rand::Pcg32Basic;
-use rand::SeedableRng;
 
 pub struct Item {
     pub id: i32,
@@ -16,15 +14,15 @@ pub struct Item {
 
 impl Item {
     pub fn new(id: i32, point: Point) -> Self {
-        // let i = rand::thread_rng().gen_range(0,2);
-        let mut rng = Pcg32Basic::from_seed([42,42]);
+        let mut rng = rand::thread_rng();
+        let rn: i32 = rng.gen();
+        // let mut rng = Pcg32Basic::from_seed([42,42]);
         Item{
             id: id,
             radius: 24,
             point: point,
             alive: true,
-            // ability: rng.gen_range(0,2),
-            ability: 2,
+            ability: (rn%3).abs(),
         }
     }
     pub fn update(&mut self, event: &mut VecDeque<Event>) {
