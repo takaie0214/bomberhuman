@@ -13,7 +13,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 use self::geometry::Size;
 use self::models::World;
-use self::controller::{Controller, Collision};
+use self::controller::{Controller, Collision, KeyType};
 
 use std::os::raw::c_int;
 
@@ -41,8 +41,8 @@ impl GameState {
         self.world.draw();
     }
 
-    pub fn processkey(&mut self, key: &str, b: c_int) {
-        let state = int_to_bool(b);
+    pub fn processkey(&mut self, key: &str, b: bool) {
+        let state = b;
         match key {
             //keymap for Player1
             "ArrowUp"    => self.controllers[0].up       = state,
@@ -75,6 +75,15 @@ impl GameState {
             _            => (),
         };
     }
+    pub fn processcontroller(&mut self, order: c_int, key: KeyType, state: bool){
+        match key {
+            KeyType::Up     => self.controllers[order as usize].up       = state,
+            KeyType::Down   => self.controllers[order as usize].down     = state,
+            KeyType::Right  => self.controllers[order as usize].right    = state,
+            KeyType::Left   => self.controllers[order as usize].left     = state,
+            KeyType::Button1=> self.controllers[order as usize].button1  = state,
+        }
+    }
 }
 
 fn int_to_bool(i: c_int) -> bool {
@@ -87,8 +96,14 @@ extern {
     pub fn alert(s: &str);
 }
 
+
 #[wasm_bindgen(module = "/src/javascript/canvas.js")]
 extern "C" {
     pub fn clear_screen();
 }
 
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
