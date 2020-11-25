@@ -16,7 +16,7 @@ pub struct Fire {
 impl Fire {
     pub fn new(id: i32, bid: i32, x: i32, y: i32, dir: Dir) -> Self {
         Fire {
-            radius: 24,
+            radius: 15,
             id: id,
             bid: bid,
             point: Point::new(x,y),
