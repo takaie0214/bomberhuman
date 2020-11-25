@@ -55,20 +55,65 @@
 /******/ 		"../pkg/bomberhuman_bg.wasm": function() {
 /******/ 			return {
 /******/ 				"./snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js": {
-/******/ 					"draw_bomb": function(p0f64,p1f64) {
-/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_bomb"](p0f64,p1f64);
+/******/ 					"draw_block": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_block"](p0i32,p1i32);
 /******/ 					},
-/******/ 					"draw_wall": function(p0f64,p1f64) {
-/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_wall"](p0f64,p1f64);
-/******/ 					},
-/******/ 					"draw_player": function(p0f64,p1f64) {
-/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_player"](p0f64,p1f64);
+/******/ 					"draw_wall": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_wall"](p0i32,p1i32);
 /******/ 					},
 /******/ 					"clear_screen": function() {
 /******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["clear_screen"]();
+/******/ 					},
+/******/ 					"draw_fire": function(p0i32,p1i32,p2i32,p3i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_fire"](p0i32,p1i32,p2i32,p3i32);
+/******/ 					},
+/******/ 					"draw_bomb": function(p0i32,p1i32,p2i32,p3i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_bomb"](p0i32,p1i32,p2i32,p3i32);
+/******/ 					},
+/******/ 					"draw_item_boots": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_item_boots"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"draw_item_fire": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_item_fire"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"draw_item_bomb": function(p0i32,p1i32) {
+/******/ 						return installedModules["../pkg/snippets/bomberhuman-3fb6ca739e397268/src/javascript/canvas.js"].exports["draw_item_bomb"](p0i32,p1i32);
 /******/ 					}
 /******/ 				},
 /******/ 				"./bomberhuman_bg.js": {
+/******/ 					"__wbg_drawplayeranimation_aa4daf4e0b1afd38": function(p0i32,p1i32,p2i32,p3i32,p4i32,p5i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_drawplayeranimation_aa4daf4e0b1afd38"](p0i32,p1i32,p2i32,p3i32,p4i32,p5i32);
+/******/ 					},
+/******/ 					"__wbindgen_object_drop_ref": function(p0i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbindgen_object_drop_ref"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_self_1c83eb4471d9eb9b": function() {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_self_1c83eb4471d9eb9b"]();
+/******/ 					},
+/******/ 					"__wbg_require_5b2b5b594d809d9f": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_require_5b2b5b594d809d9f"](p0i32,p1i32,p2i32);
+/******/ 					},
+/******/ 					"__wbg_crypto_c12f14e810edcaa2": function(p0i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_crypto_c12f14e810edcaa2"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_msCrypto_679be765111ba775": function(p0i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_msCrypto_679be765111ba775"](p0i32);
+/******/ 					},
+/******/ 					"__wbindgen_is_undefined": function(p0i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbindgen_is_undefined"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_getRandomValues_05a60bf171bfc2be": function(p0i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_getRandomValues_05a60bf171bfc2be"](p0i32);
+/******/ 					},
+/******/ 					"__wbg_getRandomValues_3ac1b33c90b52596": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_getRandomValues_3ac1b33c90b52596"](p0i32,p1i32,p2i32);
+/******/ 					},
+/******/ 					"__wbg_randomFillSync_6f956029658662ec": function(p0i32,p1i32,p2i32) {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_randomFillSync_6f956029658662ec"](p0i32,p1i32,p2i32);
+/******/ 					},
+/******/ 					"__wbg_static_accessor_MODULE_abf5ae284bffdf45": function() {
+/******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbg_static_accessor_MODULE_abf5ae284bffdf45"]();
+/******/ 					},
 /******/ 					"__wbindgen_throw": function(p0i32,p1i32) {
 /******/ 						return installedModules["../pkg/bomberhuman_bg.js"].exports["__wbindgen_throw"](p0i32,p1i32);
 /******/ 					}
@@ -173,7 +218,7 @@
 /******/ 				promises.push(installedWasmModuleData);
 /******/ 			else {
 /******/ 				var importObject = wasmImportObjects[wasmModuleId]();
-/******/ 				var req = fetch(__webpack_require__.p + "" + {"../pkg/bomberhuman_bg.wasm":"3ffd9497dab224092a74"}[wasmModuleId] + ".module.wasm");
+/******/ 				var req = fetch(__webpack_require__.p + "" + {"../pkg/bomberhuman_bg.wasm":"421e190e1c10ddd1eaf0"}[wasmModuleId] + ".module.wasm");
 /******/ 				var promise;
 /******/ 				if(importObject instanceof Promise && typeof WebAssembly.compileStreaming === 'function') {
 /******/ 					promise = Promise.all([WebAssembly.compileStreaming(req), importObject]).then(function(items) {
