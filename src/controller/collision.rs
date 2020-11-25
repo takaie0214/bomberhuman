@@ -89,13 +89,14 @@ impl Collision {
     // }
 }
 pub fn player_to_bomb(player: &mut Player, bomb: &Bomb, dt: f64, controller: &Controller){
-    player.relocate(dt,&controller,&bomb.point);
+    player.back();
 }
 pub fn player_to_wall(player: &mut Player, wall: &Wall, dt: f64, controller: &Controller){
+    player.back();
     player.relocate(dt,&controller,&wall.point);
 }
 pub fn player_to_block(player: &mut Player, block: &Block, dt: f64, controller: &Controller){
-    player.relocate(dt,&controller,&block.point);
+    player.back();
 }
 pub fn player_to_fire(player: &mut Player){
     player.die();
@@ -111,7 +112,9 @@ pub fn fire_to_wall(fire: &mut Fire) {
     fire.roll_back();
 }
 pub fn fire_to_item(item: &mut Item){
-    // item.remove();
+    if item.elapsed_time > 1.7{//違う方法が良い
+        item.remove();
+    }
 }
 
 #[wasm_bindgen]

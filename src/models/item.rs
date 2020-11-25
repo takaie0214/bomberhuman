@@ -10,26 +10,28 @@ pub struct Item {
     pub alive: bool,
     pub point: Point,
     pub ability: i32,//enum
+    pub elapsed_time: f64,
 }
 
 impl Item {
     pub fn new(id: i32, point: Point) -> Self {
         let mut rng = rand::thread_rng();
         let rn: i32 = rng.gen();
-        // let mut rng = Pcg32Basic::from_seed([42,42]);
         Item{
             id: id,
             radius: 24,
             point: point,
             alive: true,
             ability: (rn%3).abs(),
+            elapsed_time: 0.0,
         }
     }
-    pub fn update(&mut self, event: &mut VecDeque<Event>) {
+    pub fn update(&mut self, dt: f64, event: &mut VecDeque<Event>) {
         let id = self.id;
         if !self.alive {
             event.push_back(Event::Disappearance{id});
         }
+        self.elapsed_time += dt;
     }
     pub fn remove(&mut self){
         self.alive = false;

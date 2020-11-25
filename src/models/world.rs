@@ -113,10 +113,10 @@ impl World {
             b.update(&mut self.event);
         }
         for f in &mut self.fire {
-            f.update(dt,  &mut self.event);
+            f.update(dt, &mut self.event);
         }
         for i in &mut self.item {
-            i.update(&mut self.event);
+            i.update(dt, &mut self.event);
         }
         while self.event.len() != 0 {
             match self.event.pop_front() {
@@ -139,31 +139,17 @@ impl World {
                             self.item.push(Item::new(id,point))
                         }
                         Event::Explosion{fid, bid, x, y, dir} => {
-                            self.bomb.retain(|elem| elem.id != bid);//idはfireid,bombidが必要
+                            self.bomb.retain(|elem| elem.id != bid);
                             self.fire.push(Fire::new(fid, bid, x, y, dir));
                             self.players[(bid%100/10 - 1) as usize].bomb_count -= 1;
-                            // let tmp: &str = &id.to_string();
-                            // let tmp2: &str = &self.bomb[0].id.to_string();
-                            // log(tmp);
-                            // log(tmp2);
-                            // let size: &str = &self.fire.len().to_string();
-                            // log(size);
                         }
                         Event::FireSpread{fid, bid, x, y, dir} => {
                             self.fire.push(Fire::new(fid, bid, x, y, dir));
                         }
                         Event::Disappearance{id} => {
-                            // self.fire.iter().map(|elem| {let tmp: &str = &elem.id.to_string();log(tmp);});
                             self.fire.retain(|elem| elem.id != id);
                             self.blocks.retain(|elem| elem.id != id);
-                            // self.players.retain(|elem| elem.id != id);
                             self.item.retain(|elem| elem.id != id);
-                            // let size: &str = &self.fire.len().to_string();
-                            // log(size);
-                            // let tmp: &str = &id.to_string();
-                            // let tmp2: &str = &self.fire[0].id.to_string();
-                            // log(tmp);
-                            // log(tmp2);
                         }
                     }
             }
