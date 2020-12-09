@@ -6,6 +6,7 @@ pub struct Controller{
     pub right: bool,
     pub left: bool,
     pub button1: bool,
+    pub button2: bool,
 }
 impl Controller {
     pub fn new() -> Self {
@@ -15,6 +16,7 @@ impl Controller {
             right: false,
             left: false,
             button1: false,
+            button2: false,
         }
     }
 }

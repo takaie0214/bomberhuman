@@ -6,4 +6,5 @@ pub enum KeyType {
     Right,
     Left,
     Button1,
+    Button2,
 }

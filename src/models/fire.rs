@@ -20,7 +20,7 @@ impl Fire {
             id: id,
             bid: bid,
             point: Point::new(x,y),
-            ttl: 1.6,
+            ttl: 0.4,
             dir: dir,
             on_wall: false,
         }
@@ -73,11 +73,11 @@ impl Fire {
         let mut x = 0;
         let y = 0;
 
-        if self.ttl < 0.4 {
+        if self.ttl < 0.1 {
             x = 3;
-        }else if self.ttl < 0.8 {
+        }else if self.ttl < 0.2 {
             x = 2;
-        }else if self.ttl < 1.2 {
+        }else if self.ttl < 0.3 {
             x = 1;
         }
 

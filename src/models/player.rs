@@ -114,6 +114,11 @@ impl Player {
             self.bomb_id_count %= 10;
         }
 
+        if controller.button2 {
+            let pid = self.id;
+            event.push_back(Event::ExplosionAll{pid});
+        }
+
         // if !self.alive {
         //     let id = self.id;
         //     event.push_back(Event::Disappearance{id});

@@ -151,6 +151,13 @@ impl World {
                             self.blocks.retain(|elem| elem.id != id);
                             self.item.retain(|elem| elem.id != id);
                         }
+                        Event::ExplosionAll{pid} => {
+                            for b in self.bomb.iter_mut(){
+                                if b.id%100/10 == pid%100{
+                                    b.ttl = 0.0;
+                                }
+                            }
+                        }
                     }
             }
         }
