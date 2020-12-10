@@ -57,7 +57,7 @@ impl GameState {
             "d"          => self.controllers[1].right    = state,
             "a"          => self.controllers[1].left     = state,
             "m"          => self.controllers[1].button1  = state,
-            "n"          => self.controllers[1].button2  = state,
+            // "n"          => self.controllers[1].button2  = state,
 
             //keymap for Player3
             "1"          => self.controllers[2].up       = state,
@@ -83,7 +83,7 @@ impl GameState {
             KeyType::Right  => self.controllers[order as usize].right    = state,
             KeyType::Left   => self.controllers[order as usize].left     = state,
             KeyType::Button1=> self.controllers[order as usize].button1  = state,
-            // KeyType::Button2=> self.controllers[order as usize].button2  = state,
+            KeyType::Button2=> self.controllers[order as usize].button2  = state,
         }
     }
 }
